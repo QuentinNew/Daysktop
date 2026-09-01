@@ -1,0 +1,28 @@
+<h1>Entries</h1>
+
+@if (entries().length === 0) {
+  <p>No entries yet.</p>
+} @else {
+  <ul class="entries">
+    @for (entry of entries(); track entry.id) {
+      <li class="entry">
+        <div class="entry__header">
+          <span class="entry__date">{{ entry.localDate | date: 'mediumDate' }}</span>
+          @if (entry.mood) {
+            <span class="entry__mood">{{ entry.mood.name }}</span>
+          }
+        </div>
+        @if (entry.note) {
+          <p class="entry__note">{{ entry.note }}</p>
+        }
+        @if (entry.activities.length) {
+          <ul class="entry__activities">
+            @for (activity of entry.activities; track activity.id) {
+              <li>{{ activity.name }}</li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+}
