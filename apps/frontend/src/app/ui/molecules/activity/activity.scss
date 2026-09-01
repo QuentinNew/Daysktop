@@ -1,0 +1,20 @@
+:host {
+  display: inline-block;
+}
+
+.activity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--mat-sys-primary);
+}
+
+.label {
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface);
+}

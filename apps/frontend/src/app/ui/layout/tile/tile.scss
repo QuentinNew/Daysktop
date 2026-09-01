@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  line-height: 0;
+}
+
+.square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  line-height: normal;
+}

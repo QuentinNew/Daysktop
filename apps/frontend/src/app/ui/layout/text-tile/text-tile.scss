@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+}
+
+.text-tile {
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: 8px;
+  color: var(--mat-sys-on-secondary);
+  font: var(--mat-sys-body-medium);
+  text-align: left;
+}
