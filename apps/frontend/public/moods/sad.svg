@@ -1,0 +1,8 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="matrix(1, 0, 0, 1, 0, -1.819953)">
+    <title>Layer 1</title>
+    <path fill="black" opacity="undefined" d="m4.60592,12.76105c-0.55249,0 -1,-0.44751 -1,-1c0,-0.55249 0.44751,-1 1,-1c0.55249,0 1,0.44751 1,1c0,0.55249 -0.44751,1 -1,1z" id="svg_1"/>
+    <path fill="black" opacity="undefined" d="m19,12.76105c-0.55249,0 -1,-0.44751 -1,-1c0,-0.55249 0.44751,-1 1,-1c0.55249,0 1,0.44751 1,1c0,0.55249 -0.44751,1 -1,1z" id="svg_2"/>
+  </g>
+  <path stroke="null" id="svg_3" d="m8.66417,15.90148q3.33583,-3.83959 6.67166,0"/>
+</svg>

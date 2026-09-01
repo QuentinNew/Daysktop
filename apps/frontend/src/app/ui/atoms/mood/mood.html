@@ -1,0 +1,10 @@
+<div
+  class="circle"
+  role="img"
+  [attr.aria-label]="computedLabel()"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  [style.background-color]="color()"
+>
+  <img [src]="'moods/' + face() + '.svg'" alt="" [style.width.px]="size() * 0.75" [style.height.px]="size() * 0.75" />
+</div>

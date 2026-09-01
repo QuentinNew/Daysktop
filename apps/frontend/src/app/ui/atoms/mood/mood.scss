@@ -1,0 +1,11 @@
+:host {
+  display: inline-block;
+  line-height: 0;
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}

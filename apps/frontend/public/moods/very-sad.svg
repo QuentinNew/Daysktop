@@ -1,0 +1,14 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+ <g>
+  <title>Layer 1</title>
+  <path fill="black" opacity="undefined" d="m4.60592,12.76105c-0.55249,0 -1,-0.44751 -1,-1c0,-0.55249 0.44751,-1 1,-1c0.55249,0 1,0.44751 1,1c0,0.55249 -0.44751,1 -1,1z" id="svg_1"/>
+  <path fill="black" opacity="undefined" d="m19,12.76105c-0.55249,0 -1,-0.44751 -1,-1c0,-0.55249 0.44751,-1 1,-1c0.55249,0 1,0.44751 1,1c0,0.55249 -0.44751,1 -1,1z" id="svg_2"/>
+  <path transform="rotate(90.4056 19.1365 7.1221)" stroke="null" id="svg_6" d="m17.95951,9.36539c2.74972,-2.14768 2.34067,-4.46891 2.32219,-4.48657" opacity="NaN"/>
+  <path transform="rotate(37 4.74151 7.07712)" id="svg_7" d="m3.58312,9.38995c2.70633,-2.21427 2.30374,-4.60747 2.28554,-4.62566" opacity="NaN" stroke="null"/>
+  <path id="svg_8" d="m10.02663,18.20387" opacity="NaN" stroke="null"/>
+  <path id="svg_11" d="m10.3279,17.37047" opacity="NaN" stroke="null"/>
+  <path id="svg_14" d="m7.97283,16.80435" opacity="NaN" stroke="null"/>
+  <path transform="rotate(-169.853 12.4516 18.4088)" stroke="null" id="svg_22" d="m6.79693,16.99662c10.48792,0.0456 4.92476,-3.30597 10.48792,0.0456c5.56316,3.35157 -13.58869,7.56954 -10.30552,-0.0684" opacity="NaN" fill="none"/>
+ </g>
+
+</svg>
