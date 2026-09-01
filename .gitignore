@@ -1,5 +1,6 @@
 Obsidian
 .claude
+current.daylio
 
 # Node.js and NPM packages
 node_modules/
@@ -31,6 +32,7 @@ coverage/
 # Environment variables
 .env*
 !.env.example
+!.env.test.example
 
 # Dependency directories
 bower_components/

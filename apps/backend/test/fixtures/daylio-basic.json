@@ -1,0 +1,49 @@
+{
+  "version": 15,
+  "tag_groups": [
+    { "id": 1, "name": "Feelings", "order": 1 },
+    { "id": 2, "name": "Health", "order": 2 }
+  ],
+  "tags": [
+    { "id": 10, "name": "happy", "icon": 100, "order": 1, "state": 0, "id_tag_group": 1 },
+    { "id": 11, "name": "tired", "icon": 101, "order": 2, "state": 0, "id_tag_group": 1 },
+    { "id": 12, "name": "old-tag", "icon": 102, "order": 3, "state": 1, "id_tag_group": 2 }
+  ],
+  "customMoods": [
+    { "id": 1, "custom_name": "", "mood_group_id": 1, "mood_group_order": 0, "icon_id": 200, "state": 0 },
+    { "id": 2, "custom_name": "Cheerful", "mood_group_id": 2, "mood_group_order": 0, "icon_id": 201, "state": 0 },
+    { "id": 3, "custom_name": "", "mood_group_id": 4, "mood_group_order": 0, "icon_id": 202, "state": 1 }
+  ],
+  "dayEntries": [
+    {
+      "id": 100,
+      "minute": 0,
+      "hour": 8,
+      "day": 1,
+      "month": 0,
+      "year": 2024,
+      "datetime": 1704096000000,
+      "mood": 1,
+      "note": "First entry<br><br>Feeling good.",
+      "tags": [10, 11],
+      "assets": [],
+      "isFavorite": false,
+      "scaleValues": []
+    },
+    {
+      "id": 101,
+      "minute": 0,
+      "hour": 9,
+      "day": 2,
+      "month": 0,
+      "year": 2024,
+      "datetime": 1704186000000,
+      "mood": 2,
+      "note": "Second entry",
+      "tags": [10],
+      "assets": [],
+      "isFavorite": true,
+      "scaleValues": []
+    }
+  ]
+}

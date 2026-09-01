@@ -1,0 +1,40 @@
+{
+  "version": 15,
+  "tag_groups": [{ "id": 1, "name": "Feelings", "order": 1 }],
+  "tags": [{ "id": 10, "name": "happy", "icon": 100, "order": 1, "state": 0, "id_tag_group": 1 }],
+  "customMoods": [
+    { "id": 1, "custom_name": "", "mood_group_id": 1, "mood_group_order": 0, "icon_id": 200, "state": 0 }
+  ],
+  "dayEntries": [
+    {
+      "id": 200,
+      "minute": 0,
+      "hour": 20,
+      "day": 5,
+      "month": 0,
+      "year": 2024,
+      "datetime": 1704484800000,
+      "mood": 1,
+      "note": "Evening entry (later, should be skipped)",
+      "tags": [10],
+      "assets": [],
+      "isFavorite": false,
+      "scaleValues": []
+    },
+    {
+      "id": 201,
+      "minute": 0,
+      "hour": 8,
+      "day": 5,
+      "month": 0,
+      "year": 2024,
+      "datetime": 1704441600000,
+      "mood": 1,
+      "note": "Morning entry (earlier, should win)",
+      "tags": [10],
+      "assets": [],
+      "isFavorite": false,
+      "scaleValues": []
+    }
+  ]
+}

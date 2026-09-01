@@ -19,10 +19,11 @@ model User {
 }
 
 model Group {
-  id     Int    @id @default(autoincrement())
-  userId Int    @map("user_id")
-  name   String
-  order  Int    @default(0)
+  id       Int    @id @default(autoincrement())
+  userId   Int    @map("user_id")
+  name     String
+  order    Int    @default(0)
+  daylioId Int?   @unique @map("daylio_id")
 
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   activities Activity[]
@@ -31,24 +32,31 @@ model Group {
 }
 
 model Activity {
-  id      Int     @id @default(autoincrement())
-  userId  Int     @map("user_id")
-  groupId Int     @map("group_id")
-  name    String
-  icon    String?
+  id       Int     @id @default(autoincrement())
+  userId   Int     @map("user_id")
+  groupId  Int     @map("group_id")
+  name     String
+  icon     String?
+  order    Int     @default(0)
+  archived Boolean @default(false)
+  daylioId Int?    @unique @map("daylio_id")
 
-  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  group   Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  entries Entry[]   @relation("EntryActivities")
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group   Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  entries Entry[] @relation("EntryActivities")
 
   @@map("activities")
 }
 
 model Mood {
-  id    Int    @id @default(autoincrement())
-  name  String
-  icon  String?
-  color String
+  id          Int     @id @default(autoincrement())
+  name        String
+  icon        String?
+  color       String?
+  moodGroupId Int     @map("mood_group_id")
+  order       Int     @default(0)
+  archived    Boolean @default(false)
+  daylioId    Int?    @unique @map("daylio_id")
 
   entries Entry[]
 
