@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+
+  entries    Entry[]
+  activities Activity[]
+  groups     Group[]
+
+  @@map("users")
+}
+
+model Group {
+  id     Int    @id @default(autoincrement())
+  userId Int    @map("user_id")
+  name   String
+  order  Int    @default(0)
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activities Activity[]
+
+  @@map("groups")
+}
+
+model Activity {
+  id      Int     @id @default(autoincrement())
+  userId  Int     @map("user_id")
+  groupId Int     @map("group_id")
+  name    String
+  icon    String?
+
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group   Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  entries Entry[]   @relation("EntryActivities")
+
+  @@map("activities")
+}
+
+model Mood {
+  id    Int    @id @default(autoincrement())
+  name  String
+  icon  String?
+  color String
+
+  entries Entry[]
+
+  @@map("moods")
+}
+
+model Entry {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  localDate  DateTime @map("local_date") @db.Date
+  note       String?
+  isFavorite Boolean  @default(false) @map("is_favorite")
+  moodId     Int?     @map("mood_id")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mood       Mood?      @relation(fields: [moodId], references: [id])
+  activities Activity[] @relation("EntryActivities")
+
+  @@unique([userId, localDate])
+  @@map("entries")
+}

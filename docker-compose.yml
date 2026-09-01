@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: no
+    environment:
+      POSTGRES_USER: daysktop
+      POSTGRES_PASSWORD: daysktop
+      POSTGRES_DB: daysktop
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
