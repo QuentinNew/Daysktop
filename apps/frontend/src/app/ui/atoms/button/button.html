@@ -1,0 +1,10 @@
+<button
+  [matButton]="variant()"
+  [type]="type()"
+  [disabled]="disabled()"
+  [class.icon-only]="iconOnly()"
+>
+  <span class="content">
+    <ng-content />
+  </span>
+</button>

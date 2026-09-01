@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "storybook": "ng run frontend:storybook",
+    "build-storybook": "ng run frontend:build-storybook"
   },
   "private": true,
   "packageManager": "npm@11.13.0",
@@ -29,6 +31,24 @@
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "storybook": "^10.5.10",
+    "@storybook/angular-vite": "^10.5.10",
+    "@chromatic-com/storybook": "latest",
+    "@storybook/addon-vitest": "^10.5.10",
+    "@storybook/addon-a11y": "^10.5.10",
+    "@storybook/addon-docs": "^10.5.10",
+    "@storybook/addon-onboarding": "^10.5.10",
+    "@types/node": "^20",
+    "@angular-devkit/build-angular": "^22.1.0",
+    "@angular-devkit/architect": "^0.2201.0",
+    "@angular-devkit/core": "^22.1.0",
+    "@angular/animations": "^22.1.0",
+    "@analogjs/vite-plugin-angular": "latest",
+    "vite": "latest",
+    "@compodoc/compodoc": "latest",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
+    "playwright": "latest"
   }
 }

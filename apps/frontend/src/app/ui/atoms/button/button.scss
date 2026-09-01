@@ -1,0 +1,19 @@
+:host {
+  display: inline-block;
+  --mat-button-filled-container-shape: 8px;
+  --mat-button-outlined-container-shape: 8px;
+  --mat-button-text-container-shape: 8px;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 8px;
+}
+
+.icon-only {
+  min-width: unset;
+  width: 40px;
+  padding: 0;
+}
