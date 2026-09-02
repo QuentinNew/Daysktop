@@ -1,0 +1,21 @@
+:host {
+  display: inline-block;
+  line-height: 0;
+}
+
+.mood-button {
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  &.selected {
+    box-shadow: 0 0 0 3px var(--mood-color);
+  }
+}

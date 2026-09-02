@@ -1,0 +1,36 @@
+<app-text-tile class="calendar" color="var(--mat-sys-secondary)" [width]="width()">
+  <app-month-picker
+    class="calendar__month-picker"
+    [date]="date()"
+    [earliest]="earliest()"
+    [latest]="latest()"
+    (dateChange)="dateChange.emit($event)"
+  />
+
+  <div class="calendar__weekdays">
+    @for (label of weekdayLabels(); track label) {
+      <span class="calendar__weekday">{{ label }}</span>
+    }
+  </div>
+
+  <div class="calendar__grid">
+    @for (week of weeks(); track $index) {
+      @for (cell of week; track $index) {
+        <div class="calendar__cell">
+          @if (cell) {
+            @if (cell.entry) {
+              <app-mood-button
+                [face]="cell.entry.moodFace"
+                [color]="cell.entry.moodColor"
+                (click)="selectDay(cell.date)"
+              />
+            } @else {
+              <div class="calendar__empty-mood"></div>
+            }
+            <span class="calendar__day-number">{{ cell.day }}</span>
+          }
+        </div>
+      }
+    }
+  </div>
+</app-text-tile>
