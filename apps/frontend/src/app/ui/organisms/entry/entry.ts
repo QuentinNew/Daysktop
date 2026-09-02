@@ -16,6 +16,7 @@ export interface EntryActivity {
 })
 export class Entry {
   readonly date = input.required<Date>();
+  readonly width = input(320);
   readonly moodFace = input.required<MoodFace>();
   readonly moodColor = input('var(--mat-sys-primary)');
   readonly moodName = input.required<string>();

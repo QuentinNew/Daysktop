@@ -3,6 +3,7 @@ export interface Mood {
   name: string;
   icon: string | null;
   color: string | null;
+  moodGroupId: number;
 }
 
 export interface Activity {

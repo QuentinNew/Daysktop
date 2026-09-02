@@ -1,4 +1,4 @@
-<app-text-tile class="entry" color="var(--mat-sys-secondary)" [width]="320">
+<app-text-tile class="entry" color="var(--mat-sys-secondary)" [width]="width()">
   <app-text-tile class="entry__date-tab" [color]="moodColor()" [width]="240">
     {{ formattedDate() }}
   </app-text-tile>
@@ -20,7 +20,7 @@
   </div>
 
   @if (note()) {
-    <p class="entry__note">{{ note() }}</p>
+    <p class="entry__note" [innerHTML]="note()"></p>
   } @else {
     <p class="entry__note entry__note--empty">No note for this day</p>
   }
