@@ -1,4 +1,4 @@
-<app-button iconOnly="true" [disabled]="isAtEarliest()" (click)="!isAtEarliest() && previousMonth()">
+<app-button [iconOnly]="true" [disabled]="isAtEarliest()" (click)="!isAtEarliest() && previousMonth()">
   <app-icon name="arrow-left" />
 </app-button>
 
@@ -6,7 +6,7 @@
   {{ label() }}
 </app-text-tile>
 
-<app-button iconOnly="true" [disabled]="isAtLatest()" (click)="!isAtLatest() && nextMonth()">
+<app-button [iconOnly]="true" [disabled]="isAtLatest()" (click)="!isAtLatest() && nextMonth()">
   <app-icon name="arrow-right" />
 </app-button>
 

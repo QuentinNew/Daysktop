@@ -2,10 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { Injectable } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service.js';
-import type {
-  DaylioBackup,
-  DaylioDayEntry,
-} from './daylio-backup.types.js';
+import type { DaylioBackup, DaylioDayEntry } from './daylio-backup.types.js';
 import { DaylioImportError } from './import.errors.js';
 
 type PrismaTx = Prisma.TransactionClient;
@@ -16,6 +13,14 @@ const MOOD_GROUP_NAMES: Record<number, string> = {
   3: 'Meh',
   4: 'Bad',
   5: 'Horrible',
+};
+
+const MOOD_GROUP_COLORS: Record<number, string> = {
+  1: '#2ba597',
+  2: '#59d068',
+  3: '#61bec7',
+  4: '#ffad62',
+  5: '#e66442',
 };
 
 export interface ImportResult {
@@ -31,78 +36,93 @@ export interface ImportResult {
 export class ImportService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async importDaylioBackupFile(filePath: string, userId: number): Promise<ImportResult> {
+  async importDaylioBackupFile(
+    filePath: string,
+    userId: number,
+  ): Promise<ImportResult> {
     const raw = await readFile(filePath, 'utf-8');
     const backup = JSON.parse(raw) as DaylioBackup;
     return this.importDaylioBackup(backup, userId);
   }
 
-  async importDaylioBackup(backup: DaylioBackup, userId: number): Promise<ImportResult> {
-    return this.prisma.$transaction(async (tx) => {
-      const groupIdByDaylioId = await this.importGroups(tx, backup.tag_groups, userId);
-      const moodIdByDaylioId = await this.importMoods(tx, backup.customMoods);
-      const activityIdByDaylioId = await this.importActivities(
-        tx,
-        backup.tags,
-        userId,
-        groupIdByDaylioId,
-      );
+  async importDaylioBackup(
+    backup: DaylioBackup,
+    userId: number,
+  ): Promise<ImportResult> {
+    return this.prisma.$transaction(
+      async (tx) => {
+        const groupIdByDaylioId = await this.importGroups(
+          tx,
+          backup.tag_groups,
+          userId,
+        );
+        const moodIdByDaylioId = await this.importMoods(tx, backup.customMoods);
+        const activityIdByDaylioId = await this.importActivities(
+          tx,
+          backup.tags,
+          userId,
+          groupIdByDaylioId,
+        );
 
-      const { entries, skippedCollision } = deduplicateByDay(backup.dayEntries);
+        const { entries, skippedCollision } = deduplicateByDay(
+          backup.dayEntries,
+        );
 
-      let entriesImported = 0;
-      let entriesSkippedExisting = 0;
+        let entriesImported = 0;
+        let entriesSkippedExisting = 0;
 
-      for (const dayEntry of entries) {
-        const localDate = toLocalDate(dayEntry);
+        for (const dayEntry of entries) {
+          const localDate = toLocalDate(dayEntry);
 
-        const existing = await tx.entry.findUnique({
-          where: { userId_localDate: { userId, localDate } },
-        });
-        if (existing) {
-          entriesSkippedExisting++;
-          continue;
-        }
+          const existing = await tx.entry.findUnique({
+            where: { userId_localDate: { userId, localDate } },
+          });
+          if (existing) {
+            entriesSkippedExisting++;
+            continue;
+          }
 
-        const moodId = moodIdByDaylioId.get(dayEntry.mood);
-        if (moodId === undefined) {
-          throw new DaylioImportError(
-            `dayEntry ${dayEntry.id} references unknown mood id ${dayEntry.mood}`,
-          );
-        }
-
-        const activityIds = dayEntry.tags.map((tagId) => {
-          const activityId = activityIdByDaylioId.get(tagId);
-          if (activityId === undefined) {
+          const moodId = moodIdByDaylioId.get(dayEntry.mood);
+          if (moodId === undefined) {
             throw new DaylioImportError(
-              `dayEntry ${dayEntry.id} references unknown tag id ${tagId}`,
+              `dayEntry ${dayEntry.id} references unknown mood id ${dayEntry.mood}`,
             );
           }
-          return activityId;
-        });
 
-        await tx.entry.create({
-          data: {
-            userId,
-            localDate,
-            note: dayEntry.note,
-            isFavorite: dayEntry.isFavorite,
-            moodId,
-            activities: { connect: activityIds.map((id) => ({ id })) },
-          },
-        });
-        entriesImported++;
-      }
+          const activityIds = dayEntry.tags.map((tagId) => {
+            const activityId = activityIdByDaylioId.get(tagId);
+            if (activityId === undefined) {
+              throw new DaylioImportError(
+                `dayEntry ${dayEntry.id} references unknown tag id ${tagId}`,
+              );
+            }
+            return activityId;
+          });
 
-      return {
-        groupsImported: groupIdByDaylioId.size,
-        moodsImported: moodIdByDaylioId.size,
-        activitiesImported: activityIdByDaylioId.size,
-        entriesImported,
-        entriesSkippedExisting,
-        entriesSkippedCollision: skippedCollision,
-      };
-    });
+          await tx.entry.create({
+            data: {
+              userId,
+              localDate,
+              note: dayEntry.note,
+              isFavorite: dayEntry.isFavorite,
+              moodId,
+              activities: { connect: activityIds.map((id) => ({ id })) },
+            },
+          });
+          entriesImported++;
+        }
+
+        return {
+          groupsImported: groupIdByDaylioId.size,
+          moodsImported: moodIdByDaylioId.size,
+          activitiesImported: activityIdByDaylioId.size,
+          entriesImported,
+          entriesSkippedExisting,
+          entriesSkippedCollision: skippedCollision,
+        };
+      },
+      { timeout: 120_000 },
+    );
   }
 
   private async importGroups(
@@ -133,7 +153,9 @@ export class ImportService {
   ): Promise<Map<number, number>> {
     const idByDaylioId = new Map<number, number>();
     for (const customMood of customMoods) {
-      const name = customMood.custom_name || MOOD_GROUP_NAMES[customMood.mood_group_id];
+      const name =
+        customMood.custom_name || MOOD_GROUP_NAMES[customMood.mood_group_id];
+      const color = MOOD_GROUP_COLORS[customMood.mood_group_id] ?? null;
       const mood = await tx.mood.upsert({
         where: { daylioId: customMood.id },
         update: {
@@ -142,6 +164,7 @@ export class ImportService {
           moodGroupId: customMood.mood_group_id,
           order: customMood.mood_group_order,
           archived: customMood.state === 1,
+          color,
         },
         create: {
           daylioId: customMood.id,
@@ -150,6 +173,7 @@ export class ImportService {
           moodGroupId: customMood.mood_group_id,
           order: customMood.mood_group_order,
           archived: customMood.state === 1,
+          color,
         },
       });
       idByDaylioId.set(customMood.id, mood.id);

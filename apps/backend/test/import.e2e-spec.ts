@@ -78,10 +78,20 @@ describe('Daylio import (e2e)', () => {
       moodGroupId: 1,
       icon: '200',
       archived: false,
-      color: null,
+      color: '#2ba597',
     });
-    expect(moods[1]).toMatchObject({ name: 'Cheerful', moodGroupId: 2, archived: false });
-    expect(moods[2]).toMatchObject({ name: 'Bad', moodGroupId: 4, archived: true });
+    expect(moods[1]).toMatchObject({
+      name: 'Cheerful',
+      moodGroupId: 2,
+      archived: false,
+      color: '#59d068',
+    });
+    expect(moods[2]).toMatchObject({
+      name: 'Bad',
+      moodGroupId: 4,
+      archived: true,
+      color: '#ffad62',
+    });
 
     const entries = await prisma.entry.findMany({
       include: { activities: true, mood: true },

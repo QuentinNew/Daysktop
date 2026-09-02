@@ -1,0 +1,16 @@
+.calendar-page {
+  display: flex;
+  padding: 3rem;
+}
+
+.calendar-page__entry {
+  flex-shrink: 0;
+  margin-top: 10rem;
+}
+
+.calendar-page__main {
+  margin-top: 10rem;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}

@@ -1,6 +1,6 @@
 Obsidian
 .claude
-current.daylio
+*.daylio
 
 # Node.js and NPM packages
 node_modules/
