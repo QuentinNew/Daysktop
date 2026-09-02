@@ -4,6 +4,7 @@ import { EntriesService } from '../../entries/entries.service';
 import { toEntryViewModel } from '../../entries/entry-view-model';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
+import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -11,7 +12,7 @@ function isSameDay(a: Date, b: Date): boolean {
 
 @Component({
   selector: 'app-calendar-page',
-  imports: [EntryOrganism, Calendar],
+  imports: [EntryOrganism, Calendar, PageMenubar],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })

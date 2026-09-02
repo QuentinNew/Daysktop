@@ -1,12 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { Icon } from './icon';
+import { Icon, IconName } from './icon';
+
+const ICON_NAMES: IconName[] = [
+  'arrow-right',
+  'arrow-left',
+  'calendar-week',
+  'chart-dots',
+  'list',
+  'run',
+  'search',
+  'settings',
+];
 
 const meta: Meta<Icon> = {
   title: 'Atoms/Icon',
   component: Icon,
   tags: ['autodocs'],
   argTypes: {
-    name: { control: 'select', options: ['arrow-right', 'arrow-left'] },
+    name: { control: 'select', options: ICON_NAMES },
     size: { control: 'number' },
   },
   args: {
@@ -18,10 +29,22 @@ const meta: Meta<Icon> = {
 export default meta;
 type Story = StoryObj<Icon>;
 
-export const ArrowRight: Story = {
-  args: { name: 'arrow-right' },
+export const SimpleIcon: Story = {
+  args: { name: 'calendar-week' },
 };
 
-export const ArrowLeft: Story = {
-  args: { name: 'arrow-left' },
+export const AllIcons: Story = {
+  render: () => ({
+    props: { names: ICON_NAMES },
+    template: `
+      <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+        @for (name of names; track name) {
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 72px;">
+            <app-icon [name]="name" [size]="28" />
+            <span style="font-size: 12px; text-align: center;">{{ name }}</span>
+          </div>
+        }
+      </div>
+    `,
+  }),
 };

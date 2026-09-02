@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+}
+
+.menubar {
+  ::ng-deep .text-tile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px;
+  }
+}

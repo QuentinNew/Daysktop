@@ -1,0 +1,6 @@
+<button type="button" class="menu-button" [class.selected]="selected()">
+  <span class="menu-button__icon">
+    <ng-content select="[icon]" />
+  </span>
+  <span class="menu-button__label">{{ label() }}</span>
+</button>

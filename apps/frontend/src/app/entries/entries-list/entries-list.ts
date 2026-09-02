@@ -3,10 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { EntriesService } from '../entries.service';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { toEntryViewModel } from '../entry-view-model';
+import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 
 @Component({
   selector: 'app-entries-list',
-  imports: [EntryOrganism],
+  imports: [EntryOrganism, PageMenubar],
   templateUrl: './entries-list.html',
   styleUrl: './entries-list.scss',
 })

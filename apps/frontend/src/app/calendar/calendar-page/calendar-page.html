@@ -1,25 +1,29 @@
-<div class="calendar-page">
-  <aside class="calendar-page__entry">
-    @if (selectedEntry(); as entry) {
-      <app-entry
-        [date]="entry.date"
-        [moodFace]="entry.moodFace"
-        [moodColor]="entry.moodColor"
-        [moodName]="entry.moodName"
-        [activities]="entry.activities"
-        [note]="entry.note"
-      />
-    }
-  </aside>
+<div class="calendar-page-layout">
+  <div class="calendar-page">
+    <aside class="calendar-page__entry">
+      @if (selectedEntry(); as entry) {
+        <app-entry
+          [date]="entry.date"
+          [moodFace]="entry.moodFace"
+          [moodColor]="entry.moodColor"
+          [moodName]="entry.moodName"
+          [activities]="entry.activities"
+          [note]="entry.note"
+        />
+      }
+    </aside>
 
-  <main class="calendar-page__main">
-    <app-calendar
-      [date]="calendarDate()"
-      [earliest]="earliest()"
-      [latest]="latest()"
-      [entries]="calendarEntries()"
-      (dateChange)="changeMonth($event)"
-      (daySelect)="selectDay($event)"
-    />
-  </main>
+    <main class="calendar-page__main">
+      <app-calendar
+        [date]="calendarDate()"
+        [earliest]="earliest()"
+        [latest]="latest()"
+        [entries]="calendarEntries()"
+        (dateChange)="changeMonth($event)"
+        (daySelect)="selectDay($event)"
+      />
+    </main>
+  </div>
+
+  <app-page-menubar />
 </div>

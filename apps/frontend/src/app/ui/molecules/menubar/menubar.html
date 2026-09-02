@@ -1,0 +1,11 @@
+<app-text-tile class="menubar" color="var(--mat-sys-primary)" [width]="width()">
+  @for (entry of entries; track entry.id) {
+    <app-menu-button
+      [label]="entry.label"
+      [selected]="selected() === entry.id"
+      (click)="itemSelect.emit(entry.id)"
+    >
+      <app-icon icon [name]="entry.icon" />
+    </app-menu-button>
+  }
+</app-text-tile>
