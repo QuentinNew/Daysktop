@@ -1,0 +1,17 @@
+<app-button iconOnly="true" [disabled]="isAtEarliest()" (click)="!isAtEarliest() && previousMonth()">
+  <app-icon name="arrow-left" />
+</app-button>
+
+<app-text-tile class="month-picker__label" [width]="160" [matMenuTriggerFor]="monthMenu">
+  {{ label() }}
+</app-text-tile>
+
+<app-button iconOnly="true" [disabled]="isAtLatest()" (click)="!isAtLatest() && nextMonth()">
+  <app-icon name="arrow-right" />
+</app-button>
+
+<mat-menu #monthMenu="matMenu" class="month-picker__menu">
+  @for (option of monthOptions(); track option.value.getTime()) {
+    <button mat-menu-item (click)="selectMonth(option.value)">{{ option.label }}</button>
+  }
+</mat-menu>

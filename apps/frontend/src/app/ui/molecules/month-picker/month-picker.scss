@@ -1,0 +1,22 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.month-picker__label {
+  cursor: pointer;
+
+  ::ng-deep .text-tile {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+}
+
+::ng-deep .month-picker__menu {
+  width: 160px;
+  max-width: 160px;
+  max-height: 200px;
+  overflow-y: auto;
+}
