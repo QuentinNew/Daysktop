@@ -1,0 +1,27 @@
+<app-text-tile class="entry" color="var(--mat-sys-secondary)" [width]="320">
+  <app-text-tile class="entry__date-tab" [color]="moodColor()" [width]="240">
+    {{ formattedDate() }}
+  </app-text-tile>
+
+  <div class="entry__header">
+    <app-mood [face]="moodFace()" [color]="moodColor()" [size]="56" />
+
+    <div class="entry__mood-info">
+      <span class="entry__mood-name" [style.color]="moodColor()">{{ moodName() }}</span>
+
+      <div class="entry__activities">
+        @for (activity of activities(); track activity.label) {
+          <app-activity [label]="activity.label">
+            <app-icon icon name="arrow-right" />
+          </app-activity>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (note()) {
+    <p class="entry__note">{{ note() }}</p>
+  } @else {
+    <p class="entry__note entry__note--empty">No note for this day</p>
+  }
+</app-text-tile>

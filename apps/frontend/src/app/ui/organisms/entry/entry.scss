@@ -1,0 +1,58 @@
+.entry {
+  display: block;
+}
+
+.entry__date-tab {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  ::ng-deep .text-tile {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+.entry__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.entry__mood-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.entry__mood-name {
+  font-weight: 700;
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+.entry__activities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+
+  ::ng-deep .label {
+    color: var(--mat-sys-on-secondary);
+  }
+}
+
+.entry__note {
+  margin-top: 16px;
+  margin-bottom: 0;
+  padding: 0 8px;
+}
+
+.entry__note--empty {
+  opacity: 0.6;
+  font-style: italic;
+}
