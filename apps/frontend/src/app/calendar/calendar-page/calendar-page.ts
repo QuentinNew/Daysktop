@@ -5,6 +5,7 @@ import { toEntryViewModel } from '../../entries/entry-view-model';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
+import {SearchBar} from '../../ui/molecules/search-bar/search-bar';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -12,7 +13,7 @@ function isSameDay(a: Date, b: Date): boolean {
 
 @Component({
   selector: 'app-calendar-page',
-  imports: [EntryOrganism, Calendar, PageMenubar],
+  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })
@@ -37,7 +38,9 @@ export class CalendarPage {
     if (withMood.length === 0) {
       return null;
     }
-    return withMood.reduce((latest, entry) => (entry.localDate > latest.localDate ? entry : latest));
+    return withMood.reduce((latest, entry) =>
+      entry.localDate > latest.localDate ? entry : latest,
+    );
   });
 
   private readonly selectedDate = signal<Date | null>(null);

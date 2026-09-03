@@ -5,7 +5,7 @@
     <p>No entries yet.</p>
   } @else {
     <div class="entries">
-      @for (entry of entryViewModels(); track entry.id) {
+      @for (entry of visibleEntries(); track entry.id) {
         <app-entry
           [width]="720"
           [date]="entry.date"
@@ -16,6 +16,7 @@
           [note]="entry.note"
         />
       }
+      <div #sentinel class="entries__sentinel"></div>
     </div>
   }
 

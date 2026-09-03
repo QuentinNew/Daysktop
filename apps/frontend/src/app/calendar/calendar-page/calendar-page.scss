@@ -2,17 +2,21 @@
   display: flex;
   padding: 3rem;
   padding-bottom: 6rem;
+  flex-direction: column;
 }
 
-.calendar-page__entry {
-  flex-shrink: 0;
-  margin-top: 6rem;
+.calendar-page__header {
+  display: flex;
+  justify-content: right;
+  width: 100%;
 }
 
 .calendar-page__main {
-  margin-top: 6rem;
-  flex: 1;
+  padding-top: 1rem;
   display: flex;
+  flex-direction: row;
+  flex: 1;
   justify-content: center;
+  gap: 3rem;
 }
 

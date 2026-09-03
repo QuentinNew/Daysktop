@@ -1,0 +1,15 @@
+<div class="search-bar__field">
+  <app-icon name="search" class="search-bar__icon" />
+  <input
+    type="text"
+    class="search-bar__input"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    (input)="onInput($event)"
+    (keydown.enter)="emitSearch()"
+  />
+</div>
+
+<app-button [iconOnly]="true" (click)="emitSearch()">
+  <app-icon name="arrow-right" />
+</app-button>
