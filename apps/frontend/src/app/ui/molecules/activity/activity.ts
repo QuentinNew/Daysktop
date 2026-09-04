@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Icon, IconName } from '../../atoms/icon/icon';
+import { ActivityIconName, Icon } from '../../atoms/icon/icon';
 
 @Component({
   selector: 'app-activity',
@@ -8,7 +8,7 @@ import { Icon, IconName } from '../../atoms/icon/icon';
   styleUrl: './activity.scss',
 })
 export class Activity {
-  readonly icon = input.required<IconName>();
+  readonly icon = input.required<ActivityIconName>();
   readonly label = input.required<string>();
   readonly selected = input(false);
 }

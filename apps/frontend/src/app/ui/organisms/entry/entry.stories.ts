@@ -10,7 +10,7 @@ const meta: Meta<Entry> = {
     moodFace: 'happy',
     moodColor: '#2ba597',
     moodName: 'Good',
-    activities: [{ label: 'activity' }],
+    activities: [{ label: 'activity', icon: 'run' }],
     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vestibulum ut sem vel dapibus. Maecenas quis egestas mi, in congue tellus. Curabitur odio nisl, consequat et lacus ut, dapibus tincidunt dui. Nullam id ex imperdiet, suscipit arcu non, eleifend ligula. Donec interdum et lacus quis iaculis. Nunc a aliquet tortor, ut consequat sem. Donec id mauris interdum, aliquam dolor sit amet, aliquam sapien. Vestibulum fringilla enim finibus augue venenatis pharetra. Nam at ligula quis mi cursus dictum ac id ante.",
   },
 };
@@ -20,7 +20,12 @@ type Story = StoryObj<Entry>;
 
 export const Default: Story = {
   args: {
-    activities: [{ label: 'running' }, { label: 'reading' }, { label: 'cooking' }, { label: 'work' }],
+    activities: [
+      { label: 'running', icon: 'run' },
+      { label: 'reading', icon: 'book' },
+      { label: 'cooking', icon: 'teapot' },
+      { label: 'work', icon: 'briefcase-2' },
+    ],
   },};
 
 export const NoActivitiesAndNote: Story = {

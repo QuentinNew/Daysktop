@@ -20,6 +20,22 @@
   gap: 3rem;
 }
 
+// The entry is taken out of flow so its (potentially very long) note never
+// grows the row: the row height is set by the calendar, and the entry fills it.
+.calendar-page__entry {
+  position: relative;
+  flex: 0 0 auto;
+  width: 320px;
+
+  app-entry {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100%;
+  }
+}
+
 .calendar-page__media-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { Icon, IconName } from './icon';
+import { ACTIVITY_ICON_NAMES, Icon, IconName } from './icon';
 
 const ICON_NAMES: IconName[] = [
   'arrow-right',
@@ -43,6 +43,26 @@ export const AllIcons: Story = {
         @for (name of names; track name) {
           <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 72px;">
             <app-icon [name]="name" [size]="28" />
+            <span style="font-size: 12px; text-align: center;">{{ name }}</span>
+          </div>
+        }
+      </div>
+    `,
+  }),
+};
+
+export const ActivityFolderIcon: Story = {
+  args: { name: 'run', folder: 'activity' },
+};
+
+export const AllActivityIcons: Story = {
+  render: () => ({
+    props: { names: ACTIVITY_ICON_NAMES },
+    template: `
+      <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+        @for (name of names; track name) {
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 72px;">
+            <app-icon [name]="name" folder="activity" [size]="28" />
             <span style="font-size: 12px; text-align: center;">{{ name }}</span>
           </div>
         }

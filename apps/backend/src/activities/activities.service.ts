@@ -5,6 +5,11 @@ export interface FindAllActivitiesOptions {
   includeArchived?: boolean;
 }
 
+export interface UpdateActivityInput {
+  name?: string;
+  icon?: string;
+}
+
 const ACTIVITY_INCLUDE = {
   group: true,
 } as const;
@@ -33,5 +38,17 @@ export class ActivitiesService {
       throw new NotFoundException(`Activity ${id} not found`);
     }
     return activity;
+  }
+
+  async update(userId: number, id: number, input: UpdateActivityInput) {
+    await this.findOne(userId, id);
+    return this.prisma.activity.update({
+      where: { id },
+      data: {
+        name: input.name,
+        icon: input.icon,
+      },
+      include: ACTIVITY_INCLUDE,
+    });
   }
 }

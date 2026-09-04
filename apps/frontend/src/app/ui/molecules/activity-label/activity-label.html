@@ -1,6 +1,6 @@
 <div class="activity-label">
   <span class="icon">
-    <ng-content select="[icon]" />
+    <app-icon [name]="icon()" folder="activity" [size]="size()" />
   </span>
   <span class="label">{{ label() }}</span>
 </div>

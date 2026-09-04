@@ -11,16 +11,19 @@
 
       <div class="entry__activities">
         @for (activity of activities(); track activity.label) {
-          <app-activity-label [label]="activity.label">
-            <app-icon icon name="arrow-right" />
-          </app-activity-label>
+          <app-activity-label [label]="activity.label" [icon]="activity.icon" />
         }
       </div>
     </div>
   </div>
 
   @if (note()) {
-    <p class="entry__note" [innerHTML]="note()"></p>
+    <div class="entry__note-wrapper">
+      <p class="entry__note" #noteContainer (scroll)="onNoteScroll($event)" [innerHTML]="note()"></p>
+      @if (noteOverflows()) {
+        <app-scroll-bar [progress]="noteScrollProgress()" (progressChange)="onNoteScrollBarChange($event)" />
+      }
+    </div>
   } @else {
     <p class="entry__note entry__note--empty">No note for this day</p>
   }

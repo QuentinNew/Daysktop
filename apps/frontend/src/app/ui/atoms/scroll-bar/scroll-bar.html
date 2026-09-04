@@ -1,0 +1,13 @@
+<div class="scroll-bar" #bar [style.height.px]="height()" (mousedown)="onTrackMouseDown($event)">
+  <div class="scroll-bar__track"></div>
+  <div
+    class="scroll-bar__thumb"
+    cdkDrag
+    cdkDragLockAxis="y"
+    [cdkDragBoundary]="bar"
+    [cdkDragFreeDragPosition]="freeDragPosition()"
+    (cdkDragMoved)="onThumbDragMoved($event)"
+    (mousedown)="$event.stopPropagation()"
+    [style.top.%]="progress() * 100"
+  ></div>
+</div>

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { Activity } from './activity';
+import { ACTIVITY_ICON_NAMES } from '../../atoms/icon/icon';
 
 const meta: Meta<Activity> = {
   title: 'Molecules/Activity',
@@ -8,12 +9,12 @@ const meta: Meta<Activity> = {
   argTypes: {
     icon: {
       control: 'select',
-      options: ['arrow-right', 'arrow-left', 'calendar-week', 'chart-dots', 'list', 'run', 'search', 'settings'],
+      options: ACTIVITY_ICON_NAMES,
     },
     selected: { control: 'boolean' },
   },
   args: {
-    icon: 'arrow-right',
+    icon: 'run',
     label: 'Color',
     selected: false,
   },

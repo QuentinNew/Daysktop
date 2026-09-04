@@ -1,6 +1,7 @@
 import { Entry } from './entry.model';
 import { EntryActivity } from '../ui/organisms/entry/entry';
 import { MoodFace } from '../ui/atoms/mood/mood';
+import { resolveActivityIcon } from '../activities/daylio-icon-map';
 
 export const MOOD_GROUP_FACES: Record<number, MoodFace> = {
   1: 'very-happy',
@@ -32,7 +33,10 @@ export function toEntryViewModel(entry: Entry): EntryViewModel {
     moodFace: entry.mood ? MOOD_GROUP_FACES[entry.mood.moodGroupId] : 'neutral',
     moodColor: entry.mood?.color ?? 'var(--mat-sys-primary)',
     moodName: entry.mood?.name ?? 'No mood',
-    activities: entry.activities.map((activity) => ({ label: activity.name })),
+    activities: entry.activities.map((activity) => ({
+      label: activity.name,
+      icon: resolveActivityIcon(activity.icon),
+    })),
     note: entry.note ?? '',
   };
 }

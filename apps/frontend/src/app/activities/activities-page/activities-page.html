@@ -41,7 +41,63 @@
       </div>
     </app-tile-with-title>
 
-    <app-tile-with-title title="Activities" [width]="380" />
+    <app-tile-with-title title="Activities" [width]="380">
+      <div class="activities-wrapper">
+        <div class="activities" #activitiesContainer (scroll)="onActivitiesScroll($event)">
+          @for (group of activityGroups(); track group.name) {
+            <div class="activities__group">
+              <h2 class="activities__group-title">{{ group.name }}</h2>
+              <div class="activities__list">
+                @for (activity of group.activities; track activity.id) {
+                  <app-activity
+                    [icon]="activityIcon(activity)"
+                    [label]="activity.name"
+                    [selected]="selectedActivity()?.id === activity.id"
+                    (click)="selectActivity(activity.id)"
+                  />
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <app-scroll-bar
+          [progress]="activitiesScrollProgress()"
+          (progressChange)="onActivitiesScrollBarChange($event)"
+        />
+      </div>
+
+      @if (selectedActivity(); as activity) {
+        <div class="activity-edit">
+          <div class="activity-edit__preview">
+            <app-tile color="#000000" [width]="90" [height]="90">
+              <app-icon [name]="selectedActivityIcon()" folder="activity" [size]="48" />
+            </app-tile>
+            <app-text-field label="Name" [value]="activity.name" />
+          </div>
+
+          <div class="activity-edit__icons">
+            @for (icon of activityIconChoices; track icon) {
+              <button
+                type="button"
+                class="activity-edit__icon"
+                [class.activity-edit__icon--selected]="selectedActivityIcon() === icon"
+                (click)="onActivityIconChange(icon)"
+              >
+                <app-icon [name]="icon" folder="activity" [size]="24" />
+              </button>
+            }
+          </div>
+
+          <div class="moods__actions">
+            <app-button variant="outlined" [disabled]="isSavingActivity()" (click)="resetActivityEdits()">
+              Reset
+            </app-button>
+            <app-button [disabled]="isSavingActivity()" (click)="saveActivity()">Save</app-button>
+          </div>
+        </div>
+      }
+    </app-tile-with-title>
   </div>
 
   <app-page-menubar />
