@@ -5,6 +5,7 @@ import { Menubar, MenubarItem } from '../../ui/molecules/menubar/menubar';
 const ROUTES: Partial<Record<MenubarItem, string>> = {
   entries: '/entries',
   calendar: '/calendar',
+  settings: '/settings',
 };
 
 @Component({

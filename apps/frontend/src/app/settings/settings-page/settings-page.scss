@@ -1,0 +1,11 @@
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 6rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.settings-page__content {
+  display: flex;
+  justify-content: center;
+}

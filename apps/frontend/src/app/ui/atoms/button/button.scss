@@ -3,6 +3,11 @@
   --mat-button-filled-container-shape: 8px;
   --mat-button-outlined-container-shape: 8px;
   --mat-button-text-container-shape: 8px;
+  --mat-button-filled-disabled-container-color: var(--mat-sys-surface-variant);
+  --mat-button-filled-disabled-label-text-color: var(--mat-sys-on-surface);
+  --mat-button-outlined-disabled-outline-color: var(--mat-sys-outline);
+  --mat-button-outlined-disabled-label-text-color: var(--mat-sys-on-surface);
+  --mat-button-text-disabled-label-text-color: var(--mat-sys-on-surface);
 }
 
 .content {
