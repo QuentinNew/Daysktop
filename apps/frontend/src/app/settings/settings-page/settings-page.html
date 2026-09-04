@@ -9,4 +9,12 @@
     </app-settings-container>
   </div>
   <app-page-menubar />
+
+  @if (importNotification(); as notification) {
+    <app-notification
+      class="settings-page__notification"
+      [variant]="notification.variant"
+      [title]="notification.title"
+    />
+  }
 </div>

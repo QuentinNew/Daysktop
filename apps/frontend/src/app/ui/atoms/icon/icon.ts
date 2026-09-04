@@ -9,7 +9,9 @@ export type IconName =
   | 'list'
   | 'run'
   | 'search'
-  | 'settings';
+  | 'settings'
+  | 'circle-check'
+  | 'circle-x';
 
 @Component({
   selector: 'app-icon',

@@ -1,0 +1,12 @@
+<app-text-tile class="notification" [color]="color()" [width]="width()">
+  <div class="notification__body">
+    <app-icon class="notification__icon" [name]="icon()" [size]="32" />
+
+    <div class="notification__text">
+      <span class="notification__title">{{ title() }}</span>
+      @if (subtext()) {
+        <span class="notification__subtext">{{ subtext() }}</span>
+      }
+    </div>
+  </div>
+</app-text-tile>

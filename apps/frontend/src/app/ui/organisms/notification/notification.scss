@@ -1,0 +1,28 @@
+:host {
+  display: inline-block;
+}
+
+.notification__body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notification__icon {
+  flex-shrink: 0;
+}
+
+.notification__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notification__title {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.notification__subtext {
+  opacity: 0.9;
+}

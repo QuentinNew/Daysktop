@@ -3,10 +3,16 @@ import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import {SettingsContainer} from '../../ui/organisms/settings-container/settings-container';
 import {Button} from '../../ui/atoms/button/button';
 import { ImportService } from '../import.service';
+import { Notification, NotificationVariant } from '../../ui/organisms/notification/notification';
+
+interface ImportNotification {
+  variant: NotificationVariant;
+  title: string;
+}
 
 @Component({
   selector: 'app-settings-page',
-  imports: [PageMenubar, SettingsContainer, Button],
+  imports: [PageMenubar, SettingsContainer, Button, Notification],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
 })
@@ -16,6 +22,8 @@ export class SettingsPage {
   protected readonly importButtonDisabled = signal(true)
 
   protected fileSelected: File | null = null;
+
+  protected readonly importNotification = signal<ImportNotification | null>(null);
 
   public onImportFileSelected(event: Event): void {
     if (event.target instanceof HTMLInputElement && event.target.files && event.target.files.length > 0) {
@@ -28,7 +36,10 @@ export class SettingsPage {
     if (!this.fileSelected) {
       return;
     }
-    this.importService.importDaylio(this.fileSelected).subscribe();
+    this.importService.importDaylio(this.fileSelected).subscribe({
+      next: () => this.importNotification.set({ variant: 'success', title: 'Import successful' }),
+      error: () => this.importNotification.set({ variant: 'error', title: 'Import failed' }),
+    });
   }
 
 }

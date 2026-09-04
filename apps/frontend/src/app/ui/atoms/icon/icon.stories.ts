@@ -10,6 +10,8 @@ const ICON_NAMES: IconName[] = [
   'run',
   'search',
   'settings',
+  'circle-check',
+  'circle-x'
 ];
 
 const meta: Meta<Icon> = {
