@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { SettingsContainer } from './settings-container';
+import { TileWithTitle } from './tile-with-title';
 
-const meta: Meta<SettingsContainer> = {
-  title: 'Organisms/SettingsContainer',
-  component: SettingsContainer,
+const meta: Meta<TileWithTitle> = {
+  title: 'Layout/TileWithTitle',
+  component: TileWithTitle,
   tags: ['autodocs'],
   args: {
     title: 'Import / Export',
@@ -12,16 +12,16 @@ const meta: Meta<SettingsContainer> = {
 };
 
 export default meta;
-type Story = StoryObj<SettingsContainer>;
+type Story = StoryObj<TileWithTitle>;
 
 export const Default: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <app-settings-container [title]="title" [width]="width">
+      <app-tile-with-title [title]="title" [width]="width">
         <p>Text</p>
         <p>Text</p>
-      </app-settings-container>
+      </app-tile-with-title>
     `,
   }),
 };
@@ -31,9 +31,9 @@ export const ShortTitle: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <app-settings-container [title]="title" [width]="width">
+      <app-tile-with-title [title]="title" [width]="width">
         <p>Text</p>
-      </app-settings-container>
+      </app-tile-with-title>
     `,
   }),
 };

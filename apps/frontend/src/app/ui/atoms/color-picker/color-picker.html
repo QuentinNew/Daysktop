@@ -1,0 +1,16 @@
+<label class="color-picker" [class.color-picker--focused]="isFocused()">
+  <span class="color-picker__label">{{ label() }}</span>
+  <span class="color-picker__field">
+    <input
+      type="color"
+      class="color-picker__swatch"
+      [value]="value()"
+      [disabled]="disabled()"
+      (input)="onInput($event)"
+      (focus)="isFocused.set(true)"
+      (blur)="isFocused.set(false)"
+    />
+    <span class="color-picker__value">{{ value() }}</span>
+    <span class="color-picker__underline"></span>
+  </span>
+</label>

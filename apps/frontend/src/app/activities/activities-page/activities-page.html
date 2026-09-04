@@ -1,0 +1,48 @@
+<div class="page">
+  <h1 class="page__title">Activities</h1>
+
+  <div class="panels">
+    <app-tile-with-title title="Moods" [width]="380">
+      <div class="moods">
+        <div class="moods__list">
+          @for (mood of moods(); track mood.id) {
+            <button
+              type="button"
+              class="moods__mood"
+              [class.moods__mood--selected]="selectedMood()?.id === mood.id"
+              (click)="selectMood(mood)"
+            >
+              <app-mood [face]="moodFace(mood)" [color]="moodColor(mood)" [size]="40" />
+            </button>
+          }
+        </div>
+
+        @if (selectedMood(); as mood) {
+          <div class="moods__form">
+            <app-tile class="moods__preview" color="#000000" [width]="90" [height]="90">
+              <app-mood [face]="moodFace(mood)" [color]="selectedMoodColor()" [size]="64" />
+            </app-tile>
+
+            <div class="moods__grid">
+              <app-text-field label="Name" [value]="mood.name" />
+              <app-color-picker label="Color" [value]="selectedMoodColor()" (valueChange)="onColorChange($event)" />
+              <app-text-field label="ID" [value]="mood.id.toString()" />
+              <app-text-field label="Face" variant="filled" [value]="moodFace(mood)" />
+            </div>
+          </div>
+
+          <div class="moods__actions">
+            <app-button variant="outlined" [disabled]="isSaving()" (click)="resetEdits()">
+              Reset
+            </app-button>
+            <app-button [disabled]="isSaving()" (click)="save()">Save</app-button>
+          </div>
+        }
+      </div>
+    </app-tile-with-title>
+
+    <app-tile-with-title title="Activities" [width]="380" />
+  </div>
+
+  <app-page-menubar />
+</div>

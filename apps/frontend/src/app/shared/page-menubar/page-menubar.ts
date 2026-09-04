@@ -6,6 +6,7 @@ const ROUTES: Partial<Record<MenubarItem, string>> = {
   entries: '/entries',
   calendar: '/calendar',
   settings: '/settings',
+  activities: '/activities',
 };
 
 @Component({

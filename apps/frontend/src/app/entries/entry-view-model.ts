@@ -2,7 +2,7 @@ import { Entry } from './entry.model';
 import { EntryActivity } from '../ui/organisms/entry/entry';
 import { MoodFace } from '../ui/atoms/mood/mood';
 
-const MOOD_GROUP_FACES: Record<number, MoodFace> = {
+export const MOOD_GROUP_FACES: Record<number, MoodFace> = {
   1: 'very-happy',
   2: 'happy',
   3: 'neutral',

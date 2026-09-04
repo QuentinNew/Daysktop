@@ -1,0 +1,7 @@
+<div class="media-card">
+  <app-tile [width]="size()" [height]="size()" color="var(--mat-sys-surface-variant)">
+    <img class="media-card__image" [src]="image()" [alt]="name()" />
+  </app-tile>
+
+  <span class="media-card__name">{{ name() }}</span>
+</div>

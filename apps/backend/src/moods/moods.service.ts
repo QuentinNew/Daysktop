@@ -5,6 +5,11 @@ export interface FindAllMoodsOptions {
   includeArchived?: boolean;
 }
 
+export interface UpdateMoodInput {
+  name?: string;
+  color?: string;
+}
+
 @Injectable()
 export class MoodsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -24,5 +29,16 @@ export class MoodsService {
       throw new NotFoundException(`Mood ${id} not found`);
     }
     return mood;
+  }
+
+  async update(id: number, input: UpdateMoodInput) {
+    await this.findOne(id);
+    return this.prisma.mood.update({
+      where: { id },
+      data: {
+        name: input.name,
+        color: input.color,
+      },
+    });
   }
 }

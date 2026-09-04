@@ -1,0 +1,11 @@
+<div class="tile-with-title">
+  <app-tile class="tile-with-title__header" color="var(--mat-sys-primary)" [width]="200" [height]="40">
+    <span class="tile-with-title__title">{{ title() }}</span>
+  </app-tile>
+
+  <app-text-tile color="var(--mat-sys-secondary)" [width]="width()">
+    <div class="tile-with-title__content">
+      <ng-content />
+    </div>
+  </app-text-tile>
+</div>

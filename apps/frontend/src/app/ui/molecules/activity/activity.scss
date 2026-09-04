@@ -3,18 +3,38 @@
 }
 
 .activity {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
-.icon {
+.activity__circle {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--mat-sys-primary);
+  color: var(--mat-sys-primary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.activity__label {
+  font: var(--mat-sys-body-medium);
   color: var(--mat-sys-primary);
 }
 
-.label {
-  font: var(--mat-sys-body-medium);
-  color: var(--mat-sys-on-surface);
+.activity:not(.selected):hover .activity__circle {
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+}
+
+.activity.selected .activity__circle {
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
 }

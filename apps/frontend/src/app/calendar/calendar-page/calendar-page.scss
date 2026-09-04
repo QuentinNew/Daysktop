@@ -20,3 +20,9 @@
   gap: 3rem;
 }
 
+.calendar-page__media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+

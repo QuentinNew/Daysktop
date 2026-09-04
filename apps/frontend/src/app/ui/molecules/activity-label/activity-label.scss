@@ -1,0 +1,15 @@
+:host {
+  display: inline-block;
+}
+
+.activity-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--mat-sys-primary);
+}

@@ -1,6 +1,6 @@
-<div class="activity">
-  <span class="icon">
-    <ng-content select="[icon]" />
+<button type="button" class="activity" [class.selected]="selected()">
+  <span class="activity__circle">
+    <app-icon [name]="icon()" [size]="32" />
   </span>
-  <span class="label">{{ label() }}</span>
-</div>
+  <span class="activity__label">{{ label() }}</span>
+</button>

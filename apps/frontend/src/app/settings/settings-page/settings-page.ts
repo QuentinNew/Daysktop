@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
-import {SettingsContainer} from '../../ui/organisms/settings-container/settings-container';
+import { TileWithTitle } from '../../ui/layout/tile-with-title/tile-with-title';
 import {Button} from '../../ui/atoms/button/button';
 import { ImportService } from '../import.service';
 import { Notification, NotificationVariant } from '../../ui/organisms/notification/notification';
@@ -12,7 +12,7 @@ interface ImportNotification {
 
 @Component({
   selector: 'app-settings-page',
-  imports: [PageMenubar, SettingsContainer, Button, Notification],
+  imports: [PageMenubar, TileWithTitle, Button, Notification],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
 })

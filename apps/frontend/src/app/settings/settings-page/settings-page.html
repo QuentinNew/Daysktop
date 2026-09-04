@@ -1,12 +1,12 @@
 <div class="page">
   <h1>Settings</h1>
   <div class="settings-page__content">
-    <app-settings-container title="Import / Export">
+    <app-tile-with-title title="Import / Export">
       <p>You can import your .dailyo file here.</p>
       <p>Accepted types : .daylio, .json, .zip</p>
       <input type="file" class="file-upload" (change)="onImportFileSelected($event)">
       <app-button [disabled]="importButtonDisabled()" (click)="onImport()">Import</app-button>
-    </app-settings-container>
+    </app-tile-with-title>
   </div>
   <app-page-menubar />
 

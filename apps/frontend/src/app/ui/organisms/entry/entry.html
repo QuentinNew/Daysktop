@@ -11,9 +11,9 @@
 
       <div class="entry__activities">
         @for (activity of activities(); track activity.label) {
-          <app-activity [label]="activity.label">
+          <app-activity-label [label]="activity.label">
             <app-icon icon name="arrow-right" />
-          </app-activity>
+          </app-activity-label>
         }
       </div>
     </div>

@@ -27,9 +27,17 @@
           (daySelect)="selectDay($event)"
         />
 
-      <div>
-
-      </div>
+      <app-text-tile class="calendar-page__media" color="var(--mat-sys-secondary)" [width]="288">
+        <div class="calendar-page__media-grid">
+          @for (item of mediaGridItems; track $index) {
+            @if (item) {
+              <app-media-card [image]="item.image" [name]="item.name" [size]="120" />
+            } @else {
+              <app-tile [width]="120" [height]="120" color="var(--mat-sys-surface-variant)" />
+            }
+          }
+        </div>
+      </app-text-tile>
       </div>
   </div>
 

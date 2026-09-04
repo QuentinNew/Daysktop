@@ -6,18 +6,33 @@ import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import {SearchBar} from '../../ui/molecules/search-bar/search-bar';
+import { TextTile } from '../../ui/layout/text-tile/text-tile';
+import { Tile } from '../../ui/layout/tile/tile';
+import { MediaCard } from '../../ui/atoms/media-card/media-card';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
+interface MediaGridItem {
+  image: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-calendar-page',
-  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar],
+  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar, TextTile, Tile, MediaCard],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })
 export class CalendarPage {
+  protected readonly mediaGridItems: (MediaGridItem | null)[] = [
+    { image: 'https://picsum.photos/seed/genshin/320/320', name: 'Genshin Impact' },
+    null,
+    null,
+    null,
+  ];
+
   private readonly entriesService = inject(EntriesService);
 
   private readonly entries = toSignal(this.entriesService.list(), { initialValue: [] });

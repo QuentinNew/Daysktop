@@ -1,0 +1,21 @@
+<label
+  class="text-field"
+  [class.text-field--focused]="isFocused()"
+  [class.text-field--filled]="variant() === 'filled'"
+>
+  <span class="text-field__label">{{ label() }}</span>
+  <span class="text-field__field">
+    <input
+      class="text-field__input"
+      [type]="type()"
+      [value]="value()"
+      [disabled]="disabled()"
+      (input)="onInput($event)"
+      (focus)="isFocused.set(true)"
+      (blur)="isFocused.set(false)"
+    />
+    @if (variant() === 'line') {
+      <span class="text-field__underline"></span>
+    }
+  </span>
+</label>

@@ -1,0 +1,26 @@
+:host {
+  display: inline-block;
+}
+
+.tile-with-title {
+  position: relative;
+}
+
+.tile-with-title__header {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.tile-with-title__title {
+  color: var(--mat-sys-on-primary);
+  font: var(--mat-sys-body-medium);
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.tile-with-title__content {
+  margin-top: 20px;
+}
