@@ -8,10 +8,12 @@ import { MediaCard } from '../../ui/atoms/media-card/media-card';
 import { Button } from '../../ui/atoms/button/button';
 import { TextField } from '../../ui/atoms/text-field/text-field';
 import { Tile } from '../../ui/layout/tile/tile';
+import { ImageFramer, ImageFraming } from '../../ui/atoms/image-framer/image-framer';
 
 export interface MediaPickerDialogData {
   year: number;
   month: number;
+  mediaId?: number;
 }
 
 interface EditingMedia {
@@ -19,6 +21,9 @@ interface EditingMedia {
   name: string;
   type: MediaType;
   picture: string;
+  zoom: number;
+  focalX: number;
+  focalY: number;
 }
 
 const FILTER_LABELS = ['All', 'Games', 'Series', 'Other'];
@@ -26,7 +31,7 @@ const FILTER_TYPES: (MediaType | null)[] = [null, 'GAME', 'SERIE', 'OTHER'];
 
 @Component({
   selector: 'app-media-picker-dialog',
-  imports: [Tabs, SearchBar, MediaCard, Button, TextField, Tile],
+  imports: [Tabs, SearchBar, MediaCard, Button, TextField, Tile, ImageFramer],
   templateUrl: './media-picker-dialog.html',
   styleUrl: './media-picker-dialog.scss',
 })
@@ -56,7 +61,13 @@ export class MediaPickerDialog {
   });
 
   constructor() {
-    this.mediaService.list().subscribe((media) => this.media.set(media));
+    this.mediaService.list().subscribe((media) => {
+      this.media.set(media);
+      const preselected = media.find((item) => item.id === this.data.mediaId);
+      if (preselected) {
+        this.select(preselected);
+      }
+    });
   }
 
   protected select(media: Media): void {
@@ -64,11 +75,19 @@ export class MediaPickerDialog {
       this.editing.set(null);
       return;
     }
-    this.editing.set({ id: media.id, name: media.name, type: media.type, picture: media.picture });
+    this.editing.set({
+      id: media.id,
+      name: media.name,
+      type: media.type,
+      picture: media.picture,
+      zoom: media.zoom,
+      focalX: media.focalX,
+      focalY: media.focalY,
+    });
   }
 
   protected startNew(type: MediaType): void {
-    this.editing.set({ id: null, name: '', type, picture: '' });
+    this.editing.set({ id: null, name: '', type, picture: '', zoom: 1, focalX: 50, focalY: 50 });
   }
 
   protected updateName(name: string): void {
@@ -88,7 +107,14 @@ export class MediaPickerDialog {
   protected updatePicture(picture: string): void {
     const editing = this.editing();
     if (editing) {
-      this.editing.set({ ...editing, picture });
+      this.editing.set({ ...editing, picture, zoom: 1, focalX: 50, focalY: 50 });
+    }
+  }
+
+  protected updateFraming(framing: ImageFraming): void {
+    const editing = this.editing();
+    if (editing) {
+      this.editing.set({ ...editing, ...framing });
     }
   }
 
@@ -104,7 +130,15 @@ export class MediaPickerDialog {
     this.busy.set(true);
     this.persist(editing).subscribe((saved) => {
       this.busy.set(false);
-      this.editing.set({ id: saved.id, name: saved.name, type: saved.type, picture: saved.picture });
+      this.editing.set({
+        id: saved.id,
+        name: saved.name,
+        type: saved.type,
+        picture: saved.picture,
+        zoom: saved.zoom,
+        focalX: saved.focalX,
+        focalY: saved.focalY,
+      });
       this.media.update((media) => {
         const index = media.findIndex((item) => item.id === saved.id);
         return index === -1 ? [...media, saved] : media.map((item) => (item.id === saved.id ? saved : item));
@@ -144,7 +178,14 @@ export class MediaPickerDialog {
   }
 
   private persist(editing: EditingMedia) {
-    const input = { name: editing.name, type: editing.type, picture: editing.picture };
+    const input = {
+      name: editing.name,
+      type: editing.type,
+      picture: editing.picture,
+      zoom: editing.zoom,
+      focalX: editing.focalX,
+      focalY: editing.focalY,
+    };
     return editing.id === null
       ? this.mediaService.create(input)
       : this.mediaService.update(editing.id, input);

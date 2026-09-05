@@ -21,6 +21,9 @@
           [image]="item.picture"
           [name]="item.name"
           [size]="120"
+          [zoom]="item.zoom"
+          [focalX]="item.focalX"
+          [focalY]="item.focalY"
           [selected]="editing()?.id === item.id"
           (click)="select(item)"
         />
@@ -30,9 +33,18 @@
     <div class="media-picker-dialog__edit-panel">
       @if (editing(); as editing) {
         <div class="media-picker-dialog__form">
-          <app-tile [width]="120" [height]="120" color="var(--mat-sys-surface-variant)">
-            <img class="media-picker-dialog__preview" [src]="editing.picture" alt="" />
-          </app-tile>
+          @if (editing.picture) {
+            <app-image-framer
+              [image]="editing.picture"
+              [size]="120"
+              [zoom]="editing.zoom"
+              [focalX]="editing.focalX"
+              [focalY]="editing.focalY"
+              (framingChange)="updateFraming($event)"
+            />
+          } @else {
+            <app-tile [width]="120" [height]="120" color="var(--mat-sys-surface-variant)" />
+          }
 
           <app-text-field label="Name" [value]="editing.name" (valueChange)="updateName($event)" />
 

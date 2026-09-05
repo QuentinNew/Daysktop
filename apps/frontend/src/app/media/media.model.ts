@@ -11,5 +11,8 @@ export interface Media {
   name: string;
   picture: string;
   type: MediaType;
+  zoom: number;
+  focalX: number;
+  focalY: number;
   months: MediaMonth[];
 }

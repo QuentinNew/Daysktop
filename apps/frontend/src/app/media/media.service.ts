@@ -7,6 +7,9 @@ export interface MediaInput {
   name: string;
   picture: string;
   type: MediaType;
+  zoom: number;
+  focalX: number;
+  focalY: number;
 }
 
 @Injectable({ providedIn: 'root' })

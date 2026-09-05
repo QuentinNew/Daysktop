@@ -38,9 +38,13 @@
               [image]="item.picture"
               [name]="item.name"
               [size]="120"
+              [zoom]="item.zoom"
+              [focalX]="item.focalX"
+              [focalY]="item.focalY"
               [noText]="true"
               [deletable]="mediaEditMode()"
               (deleteClick)="removeMediaFromMonth(item)"
+              (click)="mediaEditMode() && openMediaPicker(item)"
             />
           }
           @if (mediaEditMode()) {

@@ -92,6 +92,9 @@ model Media {
   name    String
   picture String
   type    MediaType
+  zoom    Float     @default(1)
+  focalX  Float     @default(50) @map("focal_x")
+  focalY  Float     @default(50) @map("focal_y")
 
   user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   months MediaMonth[]

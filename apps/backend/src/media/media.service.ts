@@ -6,12 +6,18 @@ export interface CreateMediaInput {
   name: string;
   picture: string;
   type: MediaType;
+  zoom?: number;
+  focalX?: number;
+  focalY?: number;
 }
 
 export interface UpdateMediaInput {
   name?: string;
   picture?: string;
   type?: MediaType;
+  zoom?: number;
+  focalX?: number;
+  focalY?: number;
 }
 
 export interface AssignMonthInput {
@@ -34,6 +40,9 @@ export class MediaService {
         name: input.name,
         picture: input.picture,
         type: input.type,
+        zoom: input.zoom,
+        focalX: input.focalX,
+        focalY: input.focalY,
       },
       include: MEDIA_INCLUDE,
     });
@@ -66,6 +75,9 @@ export class MediaService {
         name: input.name,
         picture: input.picture,
         type: input.type,
+        zoom: input.zoom,
+        focalX: input.focalX,
+        focalY: input.focalY,
       },
       include: MEDIA_INCLUDE,
     });

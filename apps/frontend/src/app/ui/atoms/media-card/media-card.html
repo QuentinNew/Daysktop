@@ -1,6 +1,15 @@
 <div class="media-card" [class.media-card--selected]="selected()">
   <app-tile [width]="size()" [height]="size()" color="var(--mat-sys-surface-variant)">
-    <img class="media-card__image" [src]="image()" [alt]="name()" />
+    <div class="media-card__frame">
+      <img
+        class="media-card__image"
+        [src]="image()"
+        [alt]="name()"
+        [style.width.%]="framing().widthPercent"
+        [style.height.%]="framing().heightPercent"
+        [style.transform]="'translate(' + framing().translateXPercent + '%, ' + framing().translateYPercent + '%)'"
+      />
+    </div>
   </app-tile>
 
   @if (deletable()) {
@@ -8,7 +17,7 @@
       type="button"
       class="media-card__delete"
       aria-label="Delete"
-      (click)="deleteClick.emit()"
+      (click)="$event.stopPropagation(); deleteClick.emit()"
     ></button>
   }
 

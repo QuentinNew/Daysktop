@@ -62,10 +62,10 @@ export class CalendarPage {
       .subscribe(() => this.mediaRefresh$.next());
   }
 
-  protected openMediaPicker(): void {
+  protected openMediaPicker(media?: Media): void {
     const date = this.calendarDate();
     const dialogRef = this.dialog.open(MediaPickerDialog, {
-      data: { year: date.getFullYear(), month: date.getMonth() + 1 },
+      data: { year: date.getFullYear(), month: date.getMonth() + 1, mediaId: media?.id },
       panelClass: 'media-picker-dialog-panel',
       width: '1000px',
       maxWidth: '95vw',

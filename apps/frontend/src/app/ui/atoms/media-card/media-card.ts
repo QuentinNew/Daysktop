@@ -1,5 +1,6 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Tile } from '../../layout/tile/tile';
+import { computeImageFraming } from '../../../media/image-framing';
 
 @Component({
   selector: 'app-media-card',
@@ -14,6 +15,11 @@ export class MediaCard {
   readonly selected = input(false);
   readonly noText = input(false);
   readonly deletable = input(false);
+  readonly zoom = input(1);
+  readonly focalX = input(50);
+  readonly focalY = input(50);
 
   readonly deleteClick = output<void>();
+
+  protected readonly framing = computed(() => computeImageFraming(this.zoom(), this.focalX(), this.focalY()));
 }

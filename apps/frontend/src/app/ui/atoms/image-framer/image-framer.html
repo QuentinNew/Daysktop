@@ -1,0 +1,19 @@
+<div
+  class="image-framer"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  (wheel)="onWheel($event)"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp()"
+  (pointerleave)="onPointerUp()"
+>
+  <img
+    class="image-framer__image"
+    [src]="image()"
+    alt=""
+    [style.width.%]="framing().widthPercent"
+    [style.height.%]="framing().heightPercent"
+    [style.transform]="'translate(' + framing().translateXPercent + '%, ' + framing().translateYPercent + '%)'"
+  />
+</div>

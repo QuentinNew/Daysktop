@@ -7,12 +7,18 @@ interface CreateMediaBody {
   name?: unknown;
   picture?: unknown;
   type?: unknown;
+  zoom?: unknown;
+  focalX?: unknown;
+  focalY?: unknown;
 }
 
 interface UpdateMediaBody {
   name?: unknown;
   picture?: unknown;
   type?: unknown;
+  zoom?: unknown;
+  focalX?: unknown;
+  focalY?: unknown;
 }
 
 interface AssignMonthBody {
@@ -48,6 +54,16 @@ function parseOptionalMediaType(value: unknown): MediaType | undefined {
   return parseMediaType(value);
 }
 
+function parseOptionalNumber(value: unknown, fieldName: string, min: number, max: number): number | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (typeof value !== 'number' || Number.isNaN(value) || value < min || value > max) {
+    throw new BadRequestException(`Invalid ${fieldName}`);
+  }
+  return value;
+}
+
 function parseMonthNumber(value: unknown, fieldName: string): number {
   if (typeof value !== 'number' || !Number.isInteger(value)) {
     throw new BadRequestException(`Invalid ${fieldName}`);
@@ -77,6 +93,9 @@ export class MediaController {
       name: parseString(body.name, 'name'),
       picture: parseString(body.picture, 'picture'),
       type: parseMediaType(body.type),
+      zoom: parseOptionalNumber(body.zoom, 'zoom', 1, 4),
+      focalX: parseOptionalNumber(body.focalX, 'focalX', 0, 100),
+      focalY: parseOptionalNumber(body.focalY, 'focalY', 0, 100),
     });
   }
 
@@ -93,6 +112,9 @@ export class MediaController {
       name: parseOptionalString(body.name, 'name'),
       picture: parseOptionalString(body.picture, 'picture'),
       type: parseOptionalMediaType(body.type),
+      zoom: parseOptionalNumber(body.zoom, 'zoom', 1, 4),
+      focalX: parseOptionalNumber(body.focalX, 'focalX', 0, 100),
+      focalY: parseOptionalNumber(body.focalY, 'focalY', 0, 100),
     });
   }
 
