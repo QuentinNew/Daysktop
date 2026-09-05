@@ -10,10 +10,12 @@
 >
   <img
     class="image-framer__image"
+    [class.image-framer__image--hidden]="!ready()"
     [src]="image()"
     alt=""
     [style.width.%]="framing().widthPercent"
     [style.height.%]="framing().heightPercent"
     [style.transform]="'translate(' + framing().translateXPercent + '%, ' + framing().translateYPercent + '%)'"
+    (load)="onImageLoad($event)"
   />
 </div>

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MediaService } from '../media.service';
 import { Media, MediaType } from '../media.model';
@@ -9,6 +9,7 @@ import { Button } from '../../ui/atoms/button/button';
 import { TextField } from '../../ui/atoms/text-field/text-field';
 import { Tile } from '../../ui/layout/tile/tile';
 import { ImageFramer, ImageFraming } from '../../ui/atoms/image-framer/image-framer';
+import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
 
 export interface MediaPickerDialogData {
   year: number;
@@ -31,7 +32,7 @@ const FILTER_TYPES: (MediaType | null)[] = [null, 'GAME', 'SERIE', 'OTHER'];
 
 @Component({
   selector: 'app-media-picker-dialog',
-  imports: [Tabs, SearchBar, MediaCard, Button, TextField, Tile, ImageFramer],
+  imports: [Tabs, SearchBar, MediaCard, Button, TextField, Tile, ImageFramer, ScrollBar],
   templateUrl: './media-picker-dialog.html',
   styleUrl: './media-picker-dialog.scss',
 })
@@ -60,6 +61,10 @@ export class MediaPickerDialog {
     );
   });
 
+  protected readonly gridScrollProgress = signal(0);
+  protected readonly gridOverflows = signal(false);
+  private readonly gridContainer = viewChild<ElementRef<HTMLElement>>('gridContainer');
+
   constructor() {
     this.mediaService.list().subscribe((media) => {
       this.media.set(media);
@@ -68,6 +73,37 @@ export class MediaPickerDialog {
         this.select(preselected);
       }
     });
+
+    effect((onCleanup) => {
+      this.filteredMedia();
+      const el = this.gridContainer()?.nativeElement;
+      if (!el) {
+        this.gridOverflows.set(false);
+        return;
+      }
+
+      const update = () => this.gridOverflows.set(el.scrollHeight > el.clientHeight);
+      update();
+
+      const observer = new ResizeObserver(update);
+      observer.observe(el);
+      onCleanup(() => observer.disconnect());
+    });
+  }
+
+  protected onGridScroll(event: Event): void {
+    const el = event.target as HTMLElement;
+    const maxScroll = el.scrollHeight - el.clientHeight;
+    this.gridScrollProgress.set(maxScroll > 0 ? el.scrollTop / maxScroll : 0);
+  }
+
+  protected onGridScrollBarChange(progress: number): void {
+    const el = this.gridContainer()?.nativeElement;
+    if (!el) {
+      return;
+    }
+    el.scrollTop = progress * (el.scrollHeight - el.clientHeight);
+    this.gridScrollProgress.set(progress);
   }
 
   protected select(media: Media): void {

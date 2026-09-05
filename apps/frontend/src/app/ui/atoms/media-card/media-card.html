@@ -3,11 +3,13 @@
     <div class="media-card__frame">
       <img
         class="media-card__image"
+        [class.media-card__image--hidden]="!ready()"
         [src]="image()"
         [alt]="name()"
         [style.width.%]="framing().widthPercent"
         [style.height.%]="framing().heightPercent"
         [style.transform]="'translate(' + framing().translateXPercent + '%, ' + framing().translateYPercent + '%)'"
+        (load)="onImageLoad($event)"
       />
     </div>
   </app-tile>

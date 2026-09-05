@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject, startWith, switchMap } from 'rxjs';
@@ -19,6 +19,10 @@ import { MediaPickerDialog } from '../../media/media-picker-dialog/media-picker-
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function isSameMonth(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 }
 
 @Component({
@@ -139,5 +143,26 @@ export class CalendarPage {
 
   protected changeMonth(date: Date): void {
     this.displayedMonth.set(date);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  protected handleKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+      return;
+    }
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return;
+    }
+
+    const delta = event.key === 'ArrowLeft' ? -1 : 1;
+    const current = this.calendarDate();
+    const isAtEarliest = isSameMonth(current, this.earliest());
+    const isAtLatest = isSameMonth(current, this.latest());
+    if ((delta < 0 && isAtEarliest) || (delta > 0 && isAtLatest)) {
+      return;
+    }
+
+    this.changeMonth(new Date(current.getFullYear(), current.getMonth() + delta, 1));
   }
 }

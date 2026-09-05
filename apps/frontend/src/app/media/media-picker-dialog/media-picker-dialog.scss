@@ -26,12 +26,34 @@
   min-height: 450px;
 }
 
+.media-picker-dialog__grid-wrapper {
+  position: relative;
+  display: flex;
+  flex: 1;
+  padding-right: 16px;
+}
+
+.media-picker-dialog__grid-wrapper app-scroll-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
 .media-picker-dialog__grid {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 16px;
+  max-height: calc(3 * 168px + 2 * 16px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .media-picker-dialog__edit-panel {

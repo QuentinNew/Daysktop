@@ -20,6 +20,10 @@
   display: block;
 }
 
+.media-card__image--hidden {
+  visibility: hidden;
+}
+
 .media-card__name {
   display: -webkit-box;
   -webkit-box-orient: vertical;

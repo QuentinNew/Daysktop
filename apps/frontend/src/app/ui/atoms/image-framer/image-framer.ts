@@ -1,5 +1,6 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { computeImageFraming } from '../../../media/image-framing';
+import { getCachedAspectRatio, setCachedAspectRatio } from '../../../media/image-aspect-ratio-cache';
 
 export interface ImageFraming {
   zoom: number;
@@ -30,11 +31,28 @@ export class ImageFramer {
 
   readonly framingChange = output<ImageFraming>();
 
-  protected readonly framing = computed(() => computeImageFraming(this.zoom(), this.focalX(), this.focalY()));
+  private readonly loaded = signal<{ url: string; ratio: number } | null>(null);
+  private readonly loadedRatio = computed(() => (this.loaded()?.url === this.image() ? this.loaded()!.ratio : null));
+  protected readonly aspectRatio = computed(() => this.loadedRatio() ?? getCachedAspectRatio(this.image()) ?? 1);
+  protected readonly ready = computed(
+    () => this.loadedRatio() !== null || getCachedAspectRatio(this.image()) !== undefined,
+  );
+  protected readonly framing = computed(() =>
+    computeImageFraming(this.zoom(), this.focalX(), this.focalY(), this.aspectRatio()),
+  );
 
   private dragging = false;
   private lastX = 0;
   private lastY = 0;
+
+  protected onImageLoad(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+      const ratio = img.naturalWidth / img.naturalHeight;
+      setCachedAspectRatio(this.image(), ratio);
+      this.loaded.set({ url: this.image(), ratio });
+    }
+  }
 
   protected onWheel(event: WheelEvent): void {
     event.preventDefault();
@@ -58,9 +76,11 @@ export class ImageFramer {
     this.lastX = event.clientX;
     this.lastY = event.clientY;
 
-    const sensitivity = 100 / (this.size() * this.zoom());
-    const nextFocalX = clamp(this.focalX() - dx * sensitivity, 0, 100);
-    const nextFocalY = clamp(this.focalY() - dy * sensitivity, 0, 100);
+    const currentFraming = this.framing();
+    const boxWidth = (this.size() * currentFraming.widthPercent) / 100;
+    const boxHeight = (this.size() * currentFraming.heightPercent) / 100;
+    const nextFocalX = clamp(this.focalX() - (dx / boxWidth) * 100, 0, 100);
+    const nextFocalY = clamp(this.focalY() - (dy / boxHeight) * 100, 0, 100);
     this.framingChange.emit({ zoom: this.zoom(), focalX: nextFocalX, focalY: nextFocalY });
   }
 

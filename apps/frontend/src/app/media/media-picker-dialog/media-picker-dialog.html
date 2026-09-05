@@ -15,18 +15,23 @@
   </div>
 
   <div class="media-picker-dialog__main">
-    <div class="media-picker-dialog__grid">
-      @for (item of filteredMedia(); track item.id) {
-        <app-media-card
-          [image]="item.picture"
-          [name]="item.name"
-          [size]="120"
-          [zoom]="item.zoom"
-          [focalX]="item.focalX"
-          [focalY]="item.focalY"
-          [selected]="editing()?.id === item.id"
-          (click)="select(item)"
-        />
+    <div class="media-picker-dialog__grid-wrapper">
+      <div class="media-picker-dialog__grid" #gridContainer (scroll)="onGridScroll($event)">
+        @for (item of filteredMedia(); track item.id) {
+          <app-media-card
+            [image]="item.picture"
+            [name]="item.name"
+            [size]="120"
+            [zoom]="item.zoom"
+            [focalX]="item.focalX"
+            [focalY]="item.focalY"
+            [selected]="editing()?.id === item.id"
+            (click)="select(item)"
+          />
+        }
+      </div>
+      @if (gridOverflows()) {
+        <app-scroll-bar [progress]="gridScrollProgress()" (progressChange)="onGridScrollBarChange($event)" />
       }
     </div>
 
