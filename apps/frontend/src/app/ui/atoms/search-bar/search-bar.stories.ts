@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { SearchBar } from './search-bar';
 
 const meta: Meta<SearchBar> = {
-  title: 'Molecules/SearchBar',
+  title: 'Atoms/SearchBar',
   component: SearchBar,
   tags: ['autodocs'],
   args: {

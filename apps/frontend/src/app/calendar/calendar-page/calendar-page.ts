@@ -1,25 +1,24 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject, startWith, switchMap } from 'rxjs';
 import { EntriesService } from '../../entries/entries.service';
 import { toEntryViewModel } from '../../entries/entry-view-model';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
-import {SearchBar} from '../../ui/molecules/search-bar/search-bar';
+import { SearchBar } from '../../ui/atoms/search-bar/search-bar';
 import { TextTile } from '../../ui/layout/text-tile/text-tile';
 import { Tile } from '../../ui/layout/tile/tile';
 import { MediaCard } from '../../ui/atoms/media-card/media-card';
 import { Tabs } from '../../ui/atoms/tabs/tabs';
 import { Button } from '../../ui/atoms/button/button';
 import { Icon } from '../../ui/atoms/icon/icon';
+import { MediaService } from '../../media/media.service';
+import { MediaPickerDialog } from '../../media/media-picker-dialog/media-picker-dialog';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-}
-
-interface MediaGridItem {
-  image: string;
-  name: string;
 }
 
 @Component({
@@ -32,12 +31,38 @@ export class CalendarPage {
   protected readonly mediaTabs = ['Medias', 'Search', 'ChatAI'];
   protected readonly selectedMediaTab = signal(0);
 
-  protected readonly mediaGridItems: (MediaGridItem | null)[] = [
-    { image: 'https://picsum.photos/seed/genshin/320/320', name: 'Genshin Impact' },
-    null,
-    null,
-    null,
-  ];
+  private readonly dialog = inject(MatDialog);
+  private readonly mediaService = inject(MediaService);
+  private readonly mediaRefresh$ = new Subject<void>();
+  private readonly media = toSignal(
+    this.mediaRefresh$.pipe(
+      startWith(undefined),
+      switchMap(() => this.mediaService.list()),
+    ),
+    { initialValue: [] },
+  );
+
+  protected readonly mediaGridItems = computed(() => {
+    const date = this.calendarDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    return this.media().filter((item) => item.months.some((m) => m.year === year && m.month === month));
+  });
+
+  protected openMediaPicker(): void {
+    const date = this.calendarDate();
+    const dialogRef = this.dialog.open(MediaPickerDialog, {
+      data: { year: date.getFullYear(), month: date.getMonth() + 1 },
+      panelClass: 'media-picker-dialog-panel',
+      width: '1000px',
+      maxWidth: '95vw',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.mediaRefresh$.next();
+      }
+    });
+  }
 
   private readonly entriesService = inject(EntriesService);
 

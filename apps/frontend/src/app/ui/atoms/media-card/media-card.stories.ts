@@ -22,3 +22,15 @@ export const Selected: Story = {
     selected: true,
   },
 };
+
+export const NoText: Story = {
+  args: {
+    noText: true,
+  },
+};
+
+export const LongName: Story = {
+  args: {
+    name: 'A very long media name that should wrap onto a second line',
+  },
+};

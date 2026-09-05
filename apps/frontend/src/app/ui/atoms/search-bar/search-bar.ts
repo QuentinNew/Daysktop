@@ -1,10 +1,9 @@
 import { Component, input, output } from '@angular/core';
-import { Button } from '../../atoms/button/button';
-import { Icon } from '../../atoms/icon/icon';
+import { Icon } from '../icon/icon';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [Button, Icon],
+  imports: [Icon],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.scss',
 })

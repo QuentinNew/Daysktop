@@ -47,4 +47,9 @@ body {
 h1 {
   color: #ffffff;
 }
+
+.media-picker-dialog-panel .mdc-dialog__surface {
+  background-color: var(--mat-sys-secondary);
+  color: var(--mat-sys-on-secondary);
+}
 /* You can add global styles to this file, and also import other style files */

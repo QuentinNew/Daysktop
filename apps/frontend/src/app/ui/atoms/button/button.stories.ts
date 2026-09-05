@@ -58,5 +58,9 @@ export const Disabled: Story = {
   args: { variant: 'filled', disabled: true },
 };
 
+export const Error: Story = {
+  args: { variant: 'filled', color: 'error' },
+};
+
 
 

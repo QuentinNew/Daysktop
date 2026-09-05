@@ -1,0 +1,75 @@
+<div class="media-picker-dialog">
+  <h2 class="media-picker-dialog__title">Media</h2>
+
+  <div class="media-picker-dialog__toolbar">
+    <app-tabs
+      [labels]="filterLabels"
+      [selected]="selectedFilter()"
+      (selectedChange)="selectedFilter.set($event)"
+    />
+
+    <app-search-bar
+      [value]="search()"
+      (valueChange)="search.set($event)"
+    />
+  </div>
+
+  <div class="media-picker-dialog__main">
+    <div class="media-picker-dialog__grid">
+      @for (item of filteredMedia(); track item.id) {
+        <app-media-card
+          [image]="item.picture"
+          [name]="item.name"
+          [size]="120"
+          [selected]="editing()?.id === item.id"
+          (click)="select(item)"
+        />
+      }
+    </div>
+
+    <div class="media-picker-dialog__edit-panel">
+      @if (editing(); as editing) {
+        <div class="media-picker-dialog__form">
+          <app-tile [width]="120" [height]="120" color="var(--mat-sys-surface-variant)">
+            <img class="media-picker-dialog__preview" [src]="editing.picture" alt="" />
+          </app-tile>
+
+          <app-text-field label="Name" [value]="editing.name" (valueChange)="updateName($event)" />
+
+          <label class="media-picker-dialog__type-field">
+            <span class="media-picker-dialog__type-label">Type</span>
+            <select
+              class="media-picker-dialog__type-select"
+              [value]="editing.type"
+              (change)="updateType($any($event.target).value)"
+            >
+              <option value="GAME">Game</option>
+              <option value="SERIE">Series</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </label>
+
+          <app-text-field label="Image URL" [value]="editing.picture" (valueChange)="updatePicture($event)" />
+        </div>
+
+        <div class="media-picker-dialog__form-actions">
+          @if (editing.id !== null) {
+            <app-button variant="filled" color="error" [disabled]="busy()" (click)="delete()">Delete</app-button>
+          }
+          <app-button variant="filled" [disabled]="!editingValid() || busy()" (click)="save()">Save</app-button>
+        </div>
+      } @else {
+        <div class="media-picker-dialog__new-buttons">
+          <app-button variant="filled" (click)="startNew('GAME')">New Game</app-button>
+          <app-button variant="filled" (click)="startNew('SERIE')">New Series</app-button>
+          <app-button variant="filled" (click)="startNew('OTHER')">New Other</app-button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="media-picker-dialog__actions">
+    <app-button variant="outlined" (click)="cancel()">Cancel</app-button>
+    <app-button variant="filled" [disabled]="!editingValid() || busy()" (click)="confirm()">Select</app-button>
+  </div>
+</div>

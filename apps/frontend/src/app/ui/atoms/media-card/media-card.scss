@@ -11,16 +11,17 @@
 }
 
 .media-card__name {
-  display: block;
-  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   margin-top: 8px;
   font: var(--mat-sys-body-medium);
   color: inherit;
   text-align: center;
-  white-space: nowrap;
 }
 
 .media-card--selected .media-card__image {
   outline: 3px solid var(--mat-sys-primary);
-  outline-offset: 2px;
+  outline-offset: -3px;
 }

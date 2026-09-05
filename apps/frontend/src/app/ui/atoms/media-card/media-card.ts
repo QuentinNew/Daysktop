@@ -12,4 +12,5 @@ export class MediaCard {
   readonly name = input.required<string>();
   readonly size = input(160);
   readonly selected = input(false);
+  readonly noText = input(false);
 }

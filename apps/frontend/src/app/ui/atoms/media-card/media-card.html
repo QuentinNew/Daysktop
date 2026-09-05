@@ -3,5 +3,7 @@
     <img class="media-card__image" [src]="image()" [alt]="name()" />
   </app-tile>
 
-  <span class="media-card__name">{{ name() }}</span>
+  @if (!noText()) {
+    <span class="media-card__name" [style.width.px]="size()">{{ name() }}</span>
+  }
 </div>
