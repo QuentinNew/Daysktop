@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Tile } from '../../layout/tile/tile';
 
 @Component({
@@ -13,4 +13,7 @@ export class MediaCard {
   readonly size = input(160);
   readonly selected = input(false);
   readonly noText = input(false);
+  readonly deletable = input(false);
+
+  readonly deleteClick = output<void>();
 }

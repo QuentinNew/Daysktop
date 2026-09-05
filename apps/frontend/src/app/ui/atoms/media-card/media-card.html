@@ -3,6 +3,15 @@
     <img class="media-card__image" [src]="image()" [alt]="name()" />
   </app-tile>
 
+  @if (deletable()) {
+    <button
+      type="button"
+      class="media-card__delete"
+      aria-label="Delete"
+      (click)="deleteClick.emit()"
+    ></button>
+  }
+
   @if (!noText()) {
     <span class="media-card__name" [style.width.px]="size()">{{ name() }}</span>
   }

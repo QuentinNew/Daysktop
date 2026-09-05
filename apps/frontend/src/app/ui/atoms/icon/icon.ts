@@ -12,6 +12,7 @@ export type IconName =
   | 'settings'
   | 'circle-check'
   | 'circle-x'
+  | 'circle-plus'
   | 'pencil';
 
 export type ActivityIconName =

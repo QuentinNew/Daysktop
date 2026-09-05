@@ -48,3 +48,16 @@
   gap: 16px;
 }
 
+.calendar-page__media-add {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--mat-sys-primary);
+  cursor: pointer;
+}
+

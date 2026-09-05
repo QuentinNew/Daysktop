@@ -2,6 +2,10 @@
   display: inline-block;
 }
 
+.media-card {
+  position: relative;
+}
+
 .media-card__image {
   width: 100%;
   height: 100%;
@@ -24,4 +28,37 @@
 .media-card--selected .media-card__image {
   outline: 3px solid var(--mat-sys-primary);
   outline-offset: -3px;
+}
+
+.media-card__delete {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--mat-sys-error);
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    background: var(--mat-sys-on-error);
+    border-radius: 1px;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 }

@@ -9,12 +9,12 @@ import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import { SearchBar } from '../../ui/atoms/search-bar/search-bar';
 import { TextTile } from '../../ui/layout/text-tile/text-tile';
-import { Tile } from '../../ui/layout/tile/tile';
 import { MediaCard } from '../../ui/atoms/media-card/media-card';
 import { Tabs } from '../../ui/atoms/tabs/tabs';
 import { Button } from '../../ui/atoms/button/button';
 import { Icon } from '../../ui/atoms/icon/icon';
 import { MediaService } from '../../media/media.service';
+import { Media } from '../../media/media.model';
 import { MediaPickerDialog } from '../../media/media-picker-dialog/media-picker-dialog';
 
 function isSameDay(a: Date, b: Date): boolean {
@@ -23,7 +23,7 @@ function isSameDay(a: Date, b: Date): boolean {
 
 @Component({
   selector: 'app-calendar-page',
-  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar, TextTile, Tile, MediaCard, Tabs, Button, Icon],
+  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar, TextTile, MediaCard, Tabs, Button, Icon],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })
@@ -48,6 +48,19 @@ export class CalendarPage {
     const month = date.getMonth() + 1;
     return this.media().filter((item) => item.months.some((m) => m.year === year && m.month === month));
   });
+
+  protected readonly mediaEditMode = signal(false);
+
+  protected toggleMediaEditMode(): void {
+    this.mediaEditMode.update((editMode) => !editMode);
+  }
+
+  protected removeMediaFromMonth(media: Media): void {
+    const date = this.calendarDate();
+    this.mediaService
+      .unassignMonth(media.id, date.getFullYear(), date.getMonth() + 1)
+      .subscribe(() => this.mediaRefresh$.next());
+  }
 
   protected openMediaPicker(): void {
     const date = this.calendarDate();

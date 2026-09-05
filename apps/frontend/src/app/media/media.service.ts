@@ -32,4 +32,8 @@ export class MediaService {
   assignMonth(id: number, year: number, month: number): Observable<Media> {
     return this.http.post<Media>(`/api/media/${id}/months`, { year, month });
   }
+
+  unassignMonth(id: number, year: number, month: number): Observable<Media> {
+    return this.http.delete<Media>(`/api/media/${id}/months/${year}/${month}`);
+  }
 }

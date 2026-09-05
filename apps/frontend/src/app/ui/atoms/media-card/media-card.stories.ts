@@ -34,3 +34,9 @@ export const LongName: Story = {
     name: 'A very long media name that should wrap onto a second line',
   },
 };
+
+export const WithDelete: Story = {
+  args: {
+    deletable: true,
+  },
+};
