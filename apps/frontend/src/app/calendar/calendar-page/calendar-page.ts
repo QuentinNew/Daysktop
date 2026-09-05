@@ -9,6 +9,9 @@ import {SearchBar} from '../../ui/molecules/search-bar/search-bar';
 import { TextTile } from '../../ui/layout/text-tile/text-tile';
 import { Tile } from '../../ui/layout/tile/tile';
 import { MediaCard } from '../../ui/atoms/media-card/media-card';
+import { Tabs } from '../../ui/atoms/tabs/tabs';
+import { Button } from '../../ui/atoms/button/button';
+import { Icon } from '../../ui/atoms/icon/icon';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -21,11 +24,14 @@ interface MediaGridItem {
 
 @Component({
   selector: 'app-calendar-page',
-  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar, TextTile, Tile, MediaCard],
+  imports: [EntryOrganism, Calendar, PageMenubar, SearchBar, TextTile, Tile, MediaCard, Tabs, Button, Icon],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })
 export class CalendarPage {
+  protected readonly mediaTabs = ['Medias', 'Search', 'ChatAI'];
+  protected readonly selectedMediaTab = signal(0);
+
   protected readonly mediaGridItems: (MediaGridItem | null)[] = [
     { image: 'https://picsum.photos/seed/genshin/320/320', name: 'Genshin Impact' },
     null,

@@ -16,3 +16,9 @@ export default meta;
 type Story = StoryObj<MediaCard>;
 
 export const Default: Story = {};
+
+export const Selected: Story = {
+  args: {
+    selected: true,
+  },
+};

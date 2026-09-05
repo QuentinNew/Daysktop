@@ -1,4 +1,4 @@
-<div class="media-card">
+<div class="media-card" [class.media-card--selected]="selected()">
   <app-tile [width]="size()" [height]="size()" color="var(--mat-sys-surface-variant)">
     <img class="media-card__image" [src]="image()" [alt]="name()" />
   </app-tile>

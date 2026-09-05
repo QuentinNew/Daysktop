@@ -11,7 +11,8 @@ export type IconName =
   | 'search'
   | 'settings'
   | 'circle-check'
-  | 'circle-x';
+  | 'circle-x'
+  | 'pencil';
 
 export type ActivityIconName =
   | 'balloon'

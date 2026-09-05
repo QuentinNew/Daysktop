@@ -28,6 +28,12 @@
         />
 
       <app-text-tile class="calendar-page__media" color="var(--mat-sys-secondary)" [width]="288">
+        <app-tabs [labels]="mediaTabs" [selected]="selectedMediaTab()" (selectedChange)="selectedMediaTab.set($event)" />
+        <div class="calendar-page__media-header">
+          <app-button variant="text" [iconOnly]="true">
+            <app-icon name="pencil" />
+          </app-button>
+        </div>
         <div class="calendar-page__media-grid">
           @for (item of mediaGridItems; track $index) {
             @if (item) {

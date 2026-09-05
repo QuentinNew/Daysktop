@@ -64,12 +64,19 @@
 }
 
 .entry__note-wrapper {
+  position: relative;
   display: flex;
   flex: 1;
   min-height: 0;
-  gap: 8px;
   margin-top: 16px;
   padding: 0 8px;
+}
+
+.entry__note-wrapper app-scroll-bar {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  height: 100%;
 }
 
 .entry__note {

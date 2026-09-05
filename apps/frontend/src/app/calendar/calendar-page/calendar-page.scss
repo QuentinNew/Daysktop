@@ -36,6 +36,12 @@
   }
 }
 
+.calendar-page__media-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .calendar-page__media-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

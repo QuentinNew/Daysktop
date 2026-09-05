@@ -1,0 +1,12 @@
+<div class="tabs">
+  @for (label of labels(); track label; let i = $index) {
+    <button
+      type="button"
+      class="tabs__tab"
+      [class.selected]="selected() === i"
+      (click)="selectedChange.emit(i)"
+    >
+      {{ label }}
+    </button>
+  }
+</div>

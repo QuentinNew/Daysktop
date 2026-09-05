@@ -1,0 +1,46 @@
+:host {
+  display: inline-block;
+}
+
+.tabs {
+  display: flex;
+  gap: 32px;
+  padding: 12px 24px;
+  background: var(--mat-sys-secondary);
+}
+
+.tabs__tab {
+  position: relative;
+  padding: 0 0 6px;
+  border: none;
+  background: none;
+  color: var(--mat-sys-on-secondary);
+  opacity: 0.6;
+  font: var(--mat-sys-body-large);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--mat-sys-on-secondary);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &.selected {
+    opacity: 1;
+
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}

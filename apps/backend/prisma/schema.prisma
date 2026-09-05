@@ -14,6 +14,7 @@ model User {
   entries    Entry[]
   activities Activity[]
   groups     Group[]
+  media      Media[]
 
   @@map("users")
 }
@@ -77,4 +78,35 @@ model Entry {
 
   @@unique([userId, localDate])
   @@map("entries")
+}
+
+enum MediaType {
+  GAME
+  SERIE
+  OTHER
+}
+
+model Media {
+  id      Int       @id @default(autoincrement())
+  userId  Int       @map("user_id")
+  name    String
+  picture String
+  type    MediaType
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  months MediaMonth[]
+
+  @@map("media")
+}
+
+model MediaMonth {
+  id      Int @id @default(autoincrement())
+  mediaId Int @map("media_id")
+  year    Int
+  month   Int
+
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@unique([mediaId, year, month])
+  @@map("media_months")
 }

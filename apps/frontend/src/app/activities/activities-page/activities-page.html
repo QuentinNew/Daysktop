@@ -24,7 +24,7 @@
             </app-tile>
 
             <div class="moods__grid">
-              <app-text-field label="Name" [value]="mood.name" />
+              <app-text-field label="Name" [value]="selectedMoodName()" (valueChange)="onMoodNameChange($event)" />
               <app-color-picker label="Color" [value]="selectedMoodColor()" (valueChange)="onColorChange($event)" />
               <app-text-field label="ID" [value]="mood.id.toString()" />
               <app-text-field label="Face" variant="filled" [value]="moodFace(mood)" />
@@ -51,7 +51,7 @@
                 @for (activity of group.activities; track activity.id) {
                   <app-activity
                     [icon]="activityIcon(activity)"
-                    [label]="activity.name"
+                    [label]="activityName(activity)"
                     [selected]="selectedActivity()?.id === activity.id"
                     (click)="selectActivity(activity.id)"
                   />
@@ -66,17 +66,23 @@
           (progressChange)="onActivitiesScrollBarChange($event)"
         />
       </div>
+    </app-tile-with-title>
 
-      @if (selectedActivity(); as activity) {
-        <div class="activity-edit">
-          <div class="activity-edit__preview">
-            <app-tile color="#000000" [width]="90" [height]="90">
-              <app-icon [name]="selectedActivityIcon()" folder="activity" [size]="48" />
-            </app-tile>
-            <app-text-field label="Name" [value]="activity.name" />
-          </div>
+    @if (selectedActivity(); as activity) {
+      <div class="activity-edit">
+        <div class="activity-edit__preview">
+          <app-tile color="#000000" [width]="90" [height]="90">
+            <app-icon [name]="selectedActivityIcon()" folder="activity" [size]="48" />
+          </app-tile>
+          <app-text-field label="Name" [value]="selectedActivityName()" (valueChange)="onActivityNameChange($event)" />
+        </div>
 
-          <div class="activity-edit__icons">
+        <div class="activity-edit__icons-wrapper">
+          <div
+            class="activity-edit__icons"
+            #activityIconsContainer
+            (scroll)="onActivityIconsScroll($event)"
+          >
             @for (icon of activityIconChoices; track icon) {
               <button
                 type="button"
@@ -89,16 +95,29 @@
             }
           </div>
 
-          <div class="moods__actions">
-            <app-button variant="outlined" [disabled]="isSavingActivity()" (click)="resetActivityEdits()">
-              Reset
-            </app-button>
-            <app-button [disabled]="isSavingActivity()" (click)="saveActivity()">Save</app-button>
-          </div>
+          <app-scroll-bar
+            [progress]="activityIconsScrollProgress()"
+            (progressChange)="onActivityIconsScrollBarChange($event)"
+          />
         </div>
-      }
-    </app-tile-with-title>
+
+        <div class="moods__actions">
+          <app-button variant="outlined" [disabled]="isSavingActivity()" (click)="resetActivityEdits()">
+            Reset
+          </app-button>
+          <app-button [disabled]="isSavingActivity()" (click)="saveActivity()">Save</app-button>
+        </div>
+      </div>
+    }
   </div>
 
   <app-page-menubar />
+
+  @if (editNotification(); as notification) {
+    <app-notification
+      class="page__notification"
+      [variant]="notification.variant"
+      [title]="notification.title"
+    />
+  }
 </div>
