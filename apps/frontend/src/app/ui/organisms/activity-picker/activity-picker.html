@@ -1,0 +1,29 @@
+<div class="activity-picker" [style.max-height]="maxHeight()">
+  <div
+    class="activity-picker__list"
+    #container
+    role="listbox"
+    [attr.aria-multiselectable]="multiple()"
+    (scroll)="onScroll($event)"
+  >
+    @for (group of groups(); track group.name) {
+      <div class="activity-picker__group">
+        <h2 class="activity-picker__group-title">{{ group.name }}</h2>
+        <div class="activity-picker__items">
+          @for (activity of group.activities; track activity.id) {
+            <app-activity
+              role="option"
+              [attr.aria-selected]="isSelected(activity.id)"
+              [icon]="activity.icon"
+              [label]="activity.name"
+              [selected]="isSelected(activity.id)"
+              (click)="toggle.emit(activity.id)"
+            />
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <app-scroll-bar [progress]="scrollProgress()" (progressChange)="onScrollBarChange($event)" />
+</div>

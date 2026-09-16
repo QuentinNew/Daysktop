@@ -21,11 +21,20 @@ export class EntriesController {
   ) {}
 
   @Get()
-  async findAll(@Query('from') from?: string, @Query('to') to?: string) {
+  async findAll(
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('keyword') keyword?: string,
+    @Query('activities') activities?: string,
+  ) {
     const user = await this.prisma.user.findFirstOrThrow();
     return this.entriesService.findAll(user.id, {
       from: parseDateParam(from, 'from'),
       to: parseDateParam(to, 'to'),
+      keyword,
+      activityIds: activities
+        ? activities.split(',').map((id) => Number(id))
+        : undefined,
     });
   }
 

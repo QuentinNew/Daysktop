@@ -36,19 +36,42 @@
   }
 }
 
-.calendar-page__media-header {
+.calendar-page__side-panel-header {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.calendar-page__media-grid {
+.calendar-page__side-panel-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.calendar-page__media-add {
+.calendar-page__side-panel-search {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.calendar-page__side-panel-activities {
+  min-height: 0;
+}
+
+.calendar-page__side-panel-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  app-search-bar {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.calendar-page__side-panel-add {
   width: 120px;
   height: 120px;
   display: flex;
@@ -60,4 +83,3 @@
   color: var(--mat-sys-primary);
   cursor: pointer;
 }
-

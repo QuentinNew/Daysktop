@@ -96,6 +96,14 @@
   color: #fff;
 }
 
+.media-picker-dialog__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-outline);
+}
+
 .media-picker-dialog__form-actions {
   display: flex;
   justify-content: flex-end;

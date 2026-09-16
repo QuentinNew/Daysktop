@@ -19,7 +19,6 @@ html {
     )
   );
 
-  // Force the exact brand hex instead of Material's nearest M3 tone.
   --mat-sys-primary: #2ba597;
   --mat-sys-on-primary: #ffffff;
   --mat-sys-secondary: #2d2c3e;
@@ -42,6 +41,13 @@ body {
   // Reset the user agent margin.
   margin: 0;
   height: 100%;
+  user-select: none;
+
+  input,
+  textarea,
+  [contenteditable] {
+    user-select: text;
+  }
 }
 
 h1 {

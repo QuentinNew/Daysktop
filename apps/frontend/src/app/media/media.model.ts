@@ -14,5 +14,7 @@ export interface Media {
   zoom: number;
   focalX: number;
   focalY: number;
+  createdAt: string;
+  updatedAt: string;
   months: MediaMonth[];
 }

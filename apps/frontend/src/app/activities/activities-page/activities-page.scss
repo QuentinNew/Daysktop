@@ -75,52 +75,6 @@
   justify-content: flex-end;
 }
 
-.activities-wrapper {
-  position: relative;
-  display: flex;
-  max-height: calc(100vh - 240px);
-}
-
-app-scroll-bar {
-  position: absolute;
-  top: 0;
-  right: -12px;
-  height: 100%;
-}
-
-.activities {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.activities__group-title {
-  margin: 0 0 12px;
-  font-weight: 700;
-  font-size: 1.1em;
-  color: var(--mat-sys-on-secondary);
-}
-
-.activities__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
-  gap: 16px 24px;
-
-  app-activity {
-    width: 100%;
-  }
-}
-
 .activity-edit {
   display: flex;
   flex-direction: column;

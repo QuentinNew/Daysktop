@@ -14,6 +14,14 @@ interface DayCell {
   date: Date;
   day: number;
   entry: CalendarEntry | null;
+  dimmed: boolean;
+}
+
+function dateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 const DAYS_PER_WEEK = 7;
@@ -30,6 +38,7 @@ export class Calendar {
   readonly earliest = input.required<Date>();
   readonly latest = input.required<Date>();
   readonly entries = input<CalendarEntry[]>([]);
+  readonly highlightedDates = input<ReadonlySet<string> | null>(null);
   readonly width = input(420);
 
   readonly dateChange = output<Date>();
@@ -53,12 +62,14 @@ export class Calendar {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const leadingBlanks = (new Date(year, month, 1).getDay() + 6) % 7;
 
+    const highlightedDates = this.highlightedDates();
     const cells: (DayCell | null)[] = Array(leadingBlanks).fill(null);
 
     for (let day = 1; day <= daysInMonth; day++) {
       const cellDate = new Date(year, month, day);
       const entry = this.entries().find((e) => this.isSameDay(e.date, cellDate)) ?? null;
-      cells.push({ date: cellDate, day, entry });
+      const dimmed = highlightedDates !== null && !highlightedDates.has(dateKey(cellDate));
+      cells.push({ date: cellDate, day, entry, dimmed });
     }
 
     while (cells.length < DAYS_PER_WEEK * WEEKS_PER_GRID) {

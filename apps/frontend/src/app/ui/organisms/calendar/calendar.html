@@ -16,7 +16,7 @@
   <div class="calendar__grid">
     @for (week of weeks(); track $index) {
       @for (cell of week; track $index) {
-        <div class="calendar__cell">
+        <div class="calendar__cell" [class.calendar__cell--dimmed]="cell?.dimmed">
           @if (cell) {
             @if (cell.entry) {
               <app-mood-button

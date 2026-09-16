@@ -25,6 +25,8 @@ interface EditingMedia {
   zoom: number;
   focalX: number;
   focalY: number;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 const FILTER_LABELS = ['All', 'Games', 'Series', 'Other'];
@@ -119,11 +121,23 @@ export class MediaPickerDialog {
       zoom: media.zoom,
       focalX: media.focalX,
       focalY: media.focalY,
+      createdAt: media.createdAt,
+      updatedAt: media.updatedAt,
     });
   }
 
   protected startNew(type: MediaType): void {
-    this.editing.set({ id: null, name: '', type, picture: '', zoom: 1, focalX: 50, focalY: 50 });
+    this.editing.set({
+      id: null,
+      name: '',
+      type,
+      picture: '',
+      zoom: 1,
+      focalX: 50,
+      focalY: 50,
+      createdAt: null,
+      updatedAt: null,
+    });
   }
 
   protected updateName(name: string): void {
@@ -145,6 +159,16 @@ export class MediaPickerDialog {
     if (editing) {
       this.editing.set({ ...editing, picture, zoom: 1, focalX: 50, focalY: 50 });
     }
+  }
+
+  protected formatDate(iso: string): string {
+    return new Intl.DateTimeFormat('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(iso));
   }
 
   protected updateFraming(framing: ImageFraming): void {
@@ -174,6 +198,8 @@ export class MediaPickerDialog {
         zoom: saved.zoom,
         focalX: saved.focalX,
         focalY: saved.focalY,
+        createdAt: saved.createdAt,
+        updatedAt: saved.updatedAt,
       });
       this.media.update((media) => {
         const index = media.findIndex((item) => item.id === saved.id);

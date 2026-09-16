@@ -42,30 +42,11 @@
     </app-tile-with-title>
 
     <app-tile-with-title title="Activities" [width]="380">
-      <div class="activities-wrapper">
-        <div class="activities" #activitiesContainer (scroll)="onActivitiesScroll($event)">
-          @for (group of activityGroups(); track group.name) {
-            <div class="activities__group">
-              <h2 class="activities__group-title">{{ group.name }}</h2>
-              <div class="activities__list">
-                @for (activity of group.activities; track activity.id) {
-                  <app-activity
-                    [icon]="activityIcon(activity)"
-                    [label]="activityName(activity)"
-                    [selected]="selectedActivity()?.id === activity.id"
-                    (click)="selectActivity(activity.id)"
-                  />
-                }
-              </div>
-            </div>
-          }
-        </div>
-
-        <app-scroll-bar
-          [progress]="activitiesScrollProgress()"
-          (progressChange)="onActivitiesScrollBarChange($event)"
-        />
-      </div>
+      <app-activity-picker
+        [groups]="activityGroups()"
+        [selected]="selectedActivity() ? [selectedActivity()!.id] : []"
+        (toggle)="selectActivity($event)"
+      />
     </app-tile-with-title>
 
     @if (selectedActivity(); as activity) {

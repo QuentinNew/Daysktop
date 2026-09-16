@@ -4,6 +4,8 @@ import { PrismaService } from '../prisma/prisma.service.js';
 export interface FindAllEntriesOptions {
   from?: Date;
   to?: Date;
+  keyword?: string;
+  activityIds?: number[];
 }
 
 const ENTRY_INCLUDE = {
@@ -23,6 +25,13 @@ export class EntriesService {
           gte: options.from,
           lte: options.to,
         },
+        ...(options.keyword && {
+          note: { contains: options.keyword, mode: 'insensitive' },
+        }),
+        ...(options.activityIds &&
+          options.activityIds.length > 0 && {
+            AND: options.activityIds.map((id) => ({ activities: { some: { id } } })),
+          }),
       },
       include: ENTRY_INCLUDE,
       orderBy: { localDate: 'desc' },

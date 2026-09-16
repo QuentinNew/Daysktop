@@ -87,14 +87,16 @@ enum MediaType {
 }
 
 model Media {
-  id      Int       @id @default(autoincrement())
-  userId  Int       @map("user_id")
-  name    String
-  picture String
-  type    MediaType
-  zoom    Float     @default(1)
-  focalX  Float     @default(50) @map("focal_x")
-  focalY  Float     @default(50) @map("focal_y")
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  name      String
+  picture   String
+  type      MediaType
+  zoom      Float     @default(1)
+  focalX    Float     @default(50) @map("focal_x")
+  focalY    Float     @default(50) @map("focal_y")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   months MediaMonth[]

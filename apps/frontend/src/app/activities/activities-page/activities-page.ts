@@ -10,17 +10,12 @@ import { TextField } from '../../ui/atoms/text-field/text-field';
 import { ColorPicker } from '../../ui/atoms/color-picker/color-picker';
 import { Button } from '../../ui/atoms/button/button';
 import { PageMenubar } from '../../shared/page-menubar/page-menubar';
-import { Activity } from '../../ui/molecules/activity/activity';
+import { ActivityPicker, ActivityPickerGroup } from '../../ui/organisms/activity-picker/activity-picker';
 import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
 import { ActivitiesService, ActivityWithGroup } from '../activities.service';
 import { ACTIVITY_ICON_NAMES, ActivityIconName, Icon } from '../../ui/atoms/icon/icon';
 import { resolveActivityIcon } from '../daylio-icon-map';
 import { Notification, NotificationVariant } from '../../ui/organisms/notification/notification';
-
-interface ActivityGroupViewModel {
-  name: string;
-  activities: { id: number; name: string; icon: string | null }[];
-}
 
 interface EditNotification {
   variant: NotificationVariant;
@@ -37,7 +32,7 @@ interface EditNotification {
     TextField,
     ColorPicker,
     Button,
-    Activity,
+    ActivityPicker,
     ScrollBar,
     Icon,
     Notification,
@@ -49,9 +44,6 @@ export class ActivitiesPage {
   private readonly moodsService = inject(MoodsService);
   private readonly activitiesService = inject(ActivitiesService);
 
-  protected readonly activitiesScrollProgress = signal(0);
-  private readonly activitiesContainer = viewChild<ElementRef<HTMLDivElement>>('activitiesContainer');
-
   protected readonly activityIconsScrollProgress = signal(0);
   private readonly activityIconsContainer = viewChild<ElementRef<HTMLDivElement>>('activityIconsContainer');
 
@@ -59,9 +51,9 @@ export class ActivitiesPage {
 
   private readonly activities = toSignal(this.activitiesService.list(), { initialValue: [] });
 
-  protected readonly activityGroups = computed<ActivityGroupViewModel[]>(() => {
-    const groups: ActivityGroupViewModel[] = [];
-    const groupsById = new Map<number, ActivityGroupViewModel>();
+  protected readonly activityGroups = computed<ActivityPickerGroup[]>(() => {
+    const groups: ActivityPickerGroup[] = [];
+    const groupsById = new Map<number, ActivityPickerGroup>();
 
     for (const activity of this.activities()) {
       let group = groupsById.get(activity.group.id);
@@ -70,7 +62,11 @@ export class ActivitiesPage {
         groupsById.set(activity.group.id, group);
         groups.push(group);
       }
-      group.activities.push({ id: activity.id, name: activity.name, icon: activity.icon });
+      group.activities.push({
+        id: activity.id,
+        name: this.activityName(activity),
+        icon: this.activityIcon(activity),
+      });
     }
 
     return groups;
@@ -143,21 +139,6 @@ export class ActivitiesPage {
   });
 
   protected readonly hasActivityEdits = computed(() => this.editedIcon() !== null || this.editedName() !== null);
-
-  protected onActivitiesScroll(event: Event): void {
-    const el = event.target as HTMLDivElement;
-    const maxScroll = el.scrollHeight - el.clientHeight;
-    this.activitiesScrollProgress.set(maxScroll > 0 ? el.scrollTop / maxScroll : 0);
-  }
-
-  protected onActivitiesScrollBarChange(progress: number): void {
-    const el = this.activitiesContainer()?.nativeElement;
-    if (!el) {
-      return;
-    }
-    el.scrollTop = progress * (el.scrollHeight - el.clientHeight);
-    this.activitiesScrollProgress.set(progress);
-  }
 
   protected onActivityIconsScroll(event: Event): void {
     const el = event.target as HTMLDivElement;
