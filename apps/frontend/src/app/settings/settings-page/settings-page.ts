@@ -1,5 +1,4 @@
 import {Component, inject, signal} from '@angular/core';
-import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import { TileWithTitle } from '../../ui/layout/tile-with-title/tile-with-title';
 import {Button} from '../../ui/atoms/button/button';
 import { ImportService } from '../import.service';
@@ -12,7 +11,7 @@ interface ImportNotification {
 
 @Component({
   selector: 'app-settings-page',
-  imports: [PageMenubar, TileWithTitle, Button, Notification],
+  imports: [TileWithTitle, Button, Notification],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
 })

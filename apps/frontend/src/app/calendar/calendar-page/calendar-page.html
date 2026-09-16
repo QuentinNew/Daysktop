@@ -81,9 +81,25 @@
             </div>
           </div>
         }
+
+        @if (selectedMediaTab() === 2) {
+          <div class="calendar-page__side-panel-chat">
+            <div class="calendar-page__side-panel-chat-list" #chatContainer (scroll)="onChatScroll($event)">
+              @for (message of chatMessages; track $index) {
+                <app-speech-bubble
+                  class="calendar-page__side-panel-chat-bubble"
+                  [class.calendar-page__side-panel-chat-bubble--right]="message.color === 'dark'"
+                  [color]="message.color"
+                  [tailPosition]="message.tailPosition"
+                >
+                  {{ message.text }}
+                </app-speech-bubble>
+              }
+            </div>
+            <app-scroll-bar [progress]="chatScrollProgress()" (progressChange)="onChatScrollBarChange($event)" />
+          </div>
+        }
       </app-text-tile>
       </div>
   </div>
-
-  <app-page-menubar />
 </div>

@@ -1,0 +1,43 @@
+:host {
+  display: inline-block;
+  --speech-bubble-bg: #000000;
+  --speech-bubble-color: #ffffff;
+}
+
+:host(.speech-bubble--light) {
+  --speech-bubble-bg: var(--mat-sys-surface);
+  --speech-bubble-color: var(--mat-sys-on-surface);
+}
+
+.speech-bubble {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 320px;
+  padding: 10px 14px;
+  border-radius: 20px;
+  background: var(--speech-bubble-bg);
+  color: var(--speech-bubble-color);
+  font: var(--mat-sys-body-small);
+  text-align: left;
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    bottom: -8px;
+    left: 16px;
+    border-left: 16px solid var(--speech-bubble-bg);
+    border-right: 8px solid transparent;
+    border-top: 4px solid var(--speech-bubble-bg);
+    border-bottom: 7px solid transparent;
+  }
+}
+
+:host(.speech-bubble--tail-right) .speech-bubble::after {
+  left: auto;
+  right: 16px;
+  border-left: 8px solid transparent;
+  border-right: 16px solid var(--speech-bubble-bg);
+}

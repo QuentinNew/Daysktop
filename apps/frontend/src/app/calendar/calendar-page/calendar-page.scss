@@ -71,6 +71,47 @@
   }
 }
 
+.calendar-page__side-panel-chat {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  padding: 16px 0;
+}
+
+app-scroll-bar {
+  position: absolute;
+  top: 0;
+  right: -12px;
+  height: 100%;
+}
+
+.calendar-page__side-panel-chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.calendar-page__side-panel-chat-bubble {
+  align-self: flex-start;
+  margin-left: 48px;
+
+  &--right {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+}
+
 .calendar-page__side-panel-add {
   width: 120px;
   height: 120px;

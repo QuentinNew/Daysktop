@@ -9,7 +9,6 @@ import { TileWithTitle } from '../../ui/layout/tile-with-title/tile-with-title';
 import { TextField } from '../../ui/atoms/text-field/text-field';
 import { ColorPicker } from '../../ui/atoms/color-picker/color-picker';
 import { Button } from '../../ui/atoms/button/button';
-import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import { ActivityPicker, ActivityPickerGroup } from '../../ui/organisms/activity-picker/activity-picker';
 import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
 import { ActivitiesService, ActivityWithGroup } from '../activities.service';
@@ -25,7 +24,6 @@ interface EditNotification {
 @Component({
   selector: 'app-activities-page',
   imports: [
-    PageMenubar,
     TileWithTitle,
     Tile,
     MoodAtom,

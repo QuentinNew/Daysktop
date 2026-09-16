@@ -30,6 +30,7 @@
 .moods__list {
   display: flex;
   gap: 12px;
+  min-height: 40px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--mat-sys-outline);
   justify-content: center;

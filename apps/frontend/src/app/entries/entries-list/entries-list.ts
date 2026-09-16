@@ -5,13 +5,12 @@ import { switchMap } from 'rxjs';
 import { EntriesService } from '../entries.service';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { toEntryViewModel } from '../entry-view-model';
-import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 
 const BATCH_SIZE = 20;
 
 @Component({
   selector: 'app-entries-list',
-  imports: [EntryOrganism, PageMenubar],
+  imports: [EntryOrganism],
   templateUrl: './entries-list.html',
   styleUrl: './entries-list.scss',
 })

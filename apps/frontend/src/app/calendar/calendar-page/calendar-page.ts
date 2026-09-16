@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -7,13 +7,14 @@ import { EntriesService } from '../../entries/entries.service';
 import { toEntryViewModel } from '../../entries/entry-view-model';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
-import { PageMenubar } from '../../shared/page-menubar/page-menubar';
 import { SearchBar } from '../../ui/atoms/search-bar/search-bar';
 import { TextTile } from '../../ui/layout/text-tile/text-tile';
 import { MediaCard } from '../../ui/atoms/media-card/media-card';
 import { Tabs } from '../../ui/atoms/tabs/tabs';
 import { Button } from '../../ui/atoms/button/button';
 import { Icon } from '../../ui/atoms/icon/icon';
+import { SpeechBubble, SpeechBubbleColor, SpeechBubbleTailPosition } from '../../ui/atoms/speech-bubble/speech-bubble';
+import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
 import { MediaService } from '../../media/media.service';
 import { Media } from '../../media/media.model';
 import { MediaPickerDialog } from '../../media/media-picker-dialog/media-picker-dialog';
@@ -34,7 +35,6 @@ function isSameMonth(a: Date, b: Date): boolean {
   imports: [
     EntryOrganism,
     Calendar,
-    PageMenubar,
     SearchBar,
     TextTile,
     MediaCard,
@@ -42,6 +42,8 @@ function isSameMonth(a: Date, b: Date): boolean {
     Button,
     Icon,
     ActivityPicker,
+    SpeechBubble,
+    ScrollBar,
   ],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
@@ -49,6 +51,35 @@ function isSameMonth(a: Date, b: Date): boolean {
 export class CalendarPage {
   protected readonly mediaTabs = ['Medias', 'Search', 'ChatAI'];
   protected readonly selectedMediaTab = signal(0);
+
+  protected readonly chatMessages: { text: string; color: SpeechBubbleColor; tailPosition: SpeechBubbleTailPosition }[] = [
+    { text: 'What was my highlight of the month?', color: 'light', tailPosition: 'right' },
+    { text: 'You went hiking with friends and finally finished that book you started.', color: 'dark', tailPosition: 'left' },
+    { text: 'Did I journal every day this week?', color: 'light', tailPosition: 'right' },
+    { text: 'You missed Tuesday, but wrote every other day.', color: 'dark', tailPosition: 'left' },
+    { text: 'How has my mood been trending?', color: 'light', tailPosition: 'right' },
+    { text: 'Mostly positive, with a dip last weekend.', color: 'dark', tailPosition: 'left' },
+    { text: 'Any recurring activities I should keep doing?', color: 'light', tailPosition: 'right' },
+    { text: 'Morning runs show up on your best-mood days.', color: 'dark', tailPosition: 'left' },
+  ];
+
+  protected readonly chatScrollProgress = signal(0);
+  private readonly chatContainer = viewChild<ElementRef<HTMLDivElement>>('chatContainer');
+
+  protected onChatScroll(event: Event): void {
+    const el = event.target as HTMLDivElement;
+    const maxScroll = el.scrollHeight - el.clientHeight;
+    this.chatScrollProgress.set(maxScroll > 0 ? el.scrollTop / maxScroll : 0);
+  }
+
+  protected onChatScrollBarChange(progress: number): void {
+    const el = this.chatContainer()?.nativeElement;
+    if (!el) {
+      return;
+    }
+    el.scrollTop = progress * (el.scrollHeight - el.clientHeight);
+    this.chatScrollProgress.set(progress);
+  }
 
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);

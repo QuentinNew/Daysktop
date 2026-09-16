@@ -8,7 +8,6 @@
       <app-button [disabled]="importButtonDisabled()" (click)="onImport()">Import</app-button>
     </app-tile-with-title>
   </div>
-  <app-page-menubar />
 
   @if (importNotification(); as notification) {
     <app-notification
