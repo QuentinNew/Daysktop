@@ -1,6 +1,7 @@
 Obsidian
 .claude
 *.daylio
+.mcp.json
 
 # Node.js and NPM packages
 node_modules/
