@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'entries' },
+  { path: '', pathMatch: 'full', redirectTo: 'calendar' },
   {
     path: 'entries',
     loadComponent: () => import('./entries/entries-list/entries-list').then((m) => m.EntriesList),
@@ -23,4 +23,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./activities/activities-page/activities-page').then((m) => m.ActivitiesPage),
   },
+  { path: '**', redirectTo: 'calendar' },
 ];
