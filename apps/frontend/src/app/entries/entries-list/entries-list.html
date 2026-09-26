@@ -2,9 +2,10 @@
   <h1>Entries</h1>
 
   @if (entryViewModels().length === 0) {
-    <p>No entries yet.</p>
+    <p>{{ isSearch ? 'No entries found.' : 'No entries yet.' }}</p>
   } @else {
     <div class="entries">
+      <div #topSentinel class="entries__sentinel"></div>
       @for (entry of visibleEntries(); track entry.id) {
         <app-entry
           [width]="720"
@@ -16,7 +17,11 @@
           [note]="entry.note"
         />
       }
-      <div #sentinel class="entries__sentinel"></div>
+      <div #bottomSentinel class="entries__sentinel"></div>
     </div>
+
+    @if (showScrollBar()) {
+      <app-scroll-bar [progress]="scrollProgress()" (progressChange)="onScrollBarChange($event)" />
+    }
   }
 </div>
