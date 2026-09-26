@@ -58,28 +58,8 @@
           </div>
         }
 
-        @if (selectedMediaTab() === 1) {    '
-          <div class="calendar-page__side-panel-search">
-            <app-activity-picker
-              class="calendar-page__side-panel-activities"
-              [groups]="activityGroups()"
-              [selected]="selectedActivityIdsList()"
-              [multiple]="true"
-              [maxHeight]="'480px'"
-              (toggle)="toggleActivity($event)"
-            />
-            <div class="calendar-page__side-panel-search-bar">
-              <app-search-bar
-                [value]="searchKeyword()"
-                placeholder="search"
-                (valueChange)="searchKeyword.set($event)"
-                (search)="onSearchSubmit($event)"
-              />
-              <app-button [iconOnly]="true" (click)="onSearchSubmit(searchKeyword())">
-                <app-icon name="search" />
-              </app-button>
-            </div>
-          </div>
+        @if (selectedMediaTab() === 1) {
+          <app-entry-search-panel [(keyword)]="searchKeyword" [(activityIds)]="selectedActivityIds" />
         }
 
         @if (selectedMediaTab() === 2) {

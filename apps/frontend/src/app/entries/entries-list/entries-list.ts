@@ -12,28 +12,39 @@ import {
   viewChild,
   viewChildren,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { combineLatest, debounceTime, switchMap } from 'rxjs';
 import { EntriesService } from '../entries.service';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
+import { TextTile } from '../../ui/layout/text-tile/text-tile';
+import { EntrySearchPanel, toSearchQueryParams } from '../entry-search-panel/entry-search-panel';
 import { toEntryViewModel } from '../entry-view-model';
 
 const BATCH_SIZE = 20;
 const MAX_RENDERED = 60;
 // Space kept above an entry scrolled to the top, so its date tab stays visible.
 const ENTRY_TOP_OFFSET = 32;
+const SEARCH_DEBOUNCE_MS = 300;
+
+function parseSearchParams(params: ParamMap): { keyword: string; activityIds: number[] } {
+  return {
+    keyword: params.get('keyword') ?? '',
+    activityIds: params.get('activities')?.split(',').map((id) => Number(id)) ?? [],
+  };
+}
 
 @Component({
   selector: 'app-entries-list',
-  imports: [EntryOrganism, ScrollBar],
+  imports: [EntryOrganism, ScrollBar, TextTile, EntrySearchPanel],
   templateUrl: './entries-list.html',
   styleUrl: './entries-list.scss',
 })
 export class EntriesList {
   private readonly entriesService = inject(EntriesService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly injector = inject(Injector);
 
   protected readonly isSearch = this.route.snapshot.routeConfig?.path === 'search';
@@ -41,17 +52,19 @@ export class EntriesList {
   protected readonly entries = toSignal(
     this.route.queryParamMap.pipe(
       switchMap((params) => {
-        const keyword = params.get('keyword') ?? undefined;
-        const activitiesParam = params.get('activities');
-        const activityIds = activitiesParam
-          ? activitiesParam.split(',').map((id) => Number(id))
-          : undefined;
-        return keyword || activityIds ? this.entriesService.search({ keyword, activityIds }) : this.entriesService.list();
+        const { keyword, activityIds } = parseSearchParams(params);
+        return keyword || activityIds.length > 0
+          ? this.entriesService.search({ keyword, activityIds })
+          : this.entriesService.list();
       }),
     ),
     { initialValue: [] },
   );
   protected readonly entryViewModels = computed(() => this.entries().map(toEntryViewModel));
+
+  private readonly initialSearch = parseSearchParams(this.route.snapshot.queryParamMap);
+  protected readonly searchKeyword = signal(this.initialSearch.keyword);
+  protected readonly searchActivityIds = signal(this.initialSearch.activityIds);
 
   // Only entries in [windowStart, windowEnd) are rendered.
   private readonly windowStart = signal(0);
@@ -71,6 +84,22 @@ export class EntriesList {
   private isProgrammaticScroll = false;
 
   constructor() {
+    // Live search: keep the URL (and so the results) in sync with the search panel.
+    if (this.isSearch) {
+      combineLatest([
+        toObservable(this.searchKeyword).pipe(debounceTime(SEARCH_DEBOUNCE_MS)),
+        toObservable(this.searchActivityIds),
+      ])
+        .pipe(takeUntilDestroyed())
+        .subscribe(([keyword, activityIds]) =>
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: toSearchQueryParams(keyword, activityIds),
+            replaceUrl: true,
+          }),
+        );
+    }
+
     // A new result set (initial load or search change) starts from the top.
     effect(() => {
       const total = this.entryViewModels().length;

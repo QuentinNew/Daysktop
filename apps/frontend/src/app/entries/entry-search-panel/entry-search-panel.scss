@@ -1,0 +1,22 @@
+.entry-search-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.entry-search-panel__activities {
+  min-height: 0;
+}
+
+.entry-search-panel__search-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  app-search-bar {
+    flex: 1;
+    min-width: 0;
+  }
+}

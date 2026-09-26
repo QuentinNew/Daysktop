@@ -1,6 +1,12 @@
 <div class="page">
   <h1>Entries</h1>
 
+  @if (isSearch) {
+    <app-text-tile class="search-panel" color="var(--mat-sys-secondary)" [width]="288">
+      <app-entry-search-panel [(keyword)]="searchKeyword" [(activityIds)]="searchActivityIds" />
+    </app-text-tile>
+  }
+
   @if (entryViewModels().length === 0) {
     <p>{{ isSearch ? 'No entries found.' : 'No entries yet.' }}</p>
   } @else {

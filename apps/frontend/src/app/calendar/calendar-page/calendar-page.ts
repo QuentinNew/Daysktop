@@ -1,13 +1,11 @@
 import { Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Subject, startWith, switchMap } from 'rxjs';
 import { EntriesService } from '../../entries/entries.service';
 import { toEntryViewModel } from '../../entries/entry-view-model';
 import { Entry as EntryOrganism } from '../../ui/organisms/entry/entry';
 import { Calendar, CalendarEntry } from '../../ui/organisms/calendar/calendar';
-import { SearchBar } from '../../ui/atoms/search-bar/search-bar';
 import { TextTile } from '../../ui/layout/text-tile/text-tile';
 import { MediaCard } from '../../ui/atoms/media-card/media-card';
 import { Tabs } from '../../ui/atoms/tabs/tabs';
@@ -18,9 +16,7 @@ import { ScrollBar } from '../../ui/atoms/scroll-bar/scroll-bar';
 import { MediaService } from '../../media/media.service';
 import { Media } from '../../media/media.model';
 import { MediaPickerDialog } from '../../media/media-picker-dialog/media-picker-dialog';
-import { ActivityPicker, ActivityPickerGroup } from '../../ui/organisms/activity-picker/activity-picker';
-import { ActivitiesService } from '../../activities/activities.service';
-import { resolveActivityIcon } from '../../activities/daylio-icon-map';
+import { EntrySearchPanel } from '../../entries/entry-search-panel/entry-search-panel';
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -35,13 +31,12 @@ function isSameMonth(a: Date, b: Date): boolean {
   imports: [
     EntryOrganism,
     Calendar,
-    SearchBar,
     TextTile,
     MediaCard,
     Tabs,
     Button,
     Icon,
-    ActivityPicker,
+    EntrySearchPanel,
     SpeechBubble,
     ScrollBar,
   ],
@@ -81,7 +76,6 @@ export class CalendarPage {
     this.chatScrollProgress.set(progress);
   }
 
-  private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
   private readonly mediaService = inject(MediaService);
   private readonly mediaRefresh$ = new Subject<void>();
@@ -132,46 +126,13 @@ export class CalendarPage {
 
   private readonly entries = toSignal(this.entriesService.list(), { initialValue: [] });
 
-  private readonly activitiesService = inject(ActivitiesService);
-  private readonly activities = toSignal(this.activitiesService.list(), { initialValue: [] });
-
-  protected readonly activityGroups = computed<ActivityPickerGroup[]>(() => {
-    const groups: ActivityPickerGroup[] = [];
-    const groupsById = new Map<number, ActivityPickerGroup>();
-
-    for (const activity of this.activities()) {
-      let group = groupsById.get(activity.group.id);
-      if (!group) {
-        group = { name: activity.group.name, activities: [] };
-        groupsById.set(activity.group.id, group);
-        groups.push(group);
-      }
-      group.activities.push({ id: activity.id, name: activity.name, icon: resolveActivityIcon(activity.icon) });
-    }
-
-    return groups;
-  });
-
-  private readonly selectedActivityIds = signal<ReadonlySet<number>>(new Set());
-  protected readonly selectedActivityIdsList = computed(() => [...this.selectedActivityIds()]);
+  protected readonly selectedActivityIds = signal<number[]>([]);
   protected readonly searchKeyword = signal('');
-
-  protected toggleActivity(activityId: number): void {
-    this.selectedActivityIds.update((ids) => {
-      const next = new Set(ids);
-      if (next.has(activityId)) {
-        next.delete(activityId);
-      } else {
-        next.add(activityId);
-      }
-      return next;
-    });
-  }
 
   protected readonly highlightedDates = computed<ReadonlySet<string> | null>(() => {
     const activityIds = this.selectedActivityIds();
     const keyword = this.searchKeyword().trim().toLowerCase();
-    if (activityIds.size === 0 && keyword === '') {
+    if (activityIds.length === 0 && keyword === '') {
       return null;
     }
 
@@ -179,23 +140,14 @@ export class CalendarPage {
     for (const entry of this.entries()) {
       const matchesKeyword = keyword === '' || (entry.note ?? '').toLowerCase().includes(keyword);
       const matchesActivities =
-        activityIds.size === 0 ||
-        [...activityIds].every((id) => entry.activities.some((activity) => activity.id === id));
+        activityIds.length === 0 ||
+        activityIds.every((id) => entry.activities.some((activity) => activity.id === id));
       if (matchesKeyword && matchesActivities) {
         matching.add(entry.localDate.slice(0, 10));
       }
     }
     return matching;
   });
-
-  protected onSearchSubmit(keyword: string): void {
-    this.router.navigate(['/search'], {
-      queryParams: {
-        keyword: keyword.trim() || undefined,
-        activities: this.selectedActivityIdsList().join(',') || undefined,
-      },
-    });
-  }
 
   protected readonly calendarEntries = computed<CalendarEntry[]>(() =>
     this.entries()

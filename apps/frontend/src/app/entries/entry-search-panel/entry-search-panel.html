@@ -1,0 +1,21 @@
+<div class="entry-search-panel">
+  <app-activity-picker
+    class="entry-search-panel__activities"
+    [groups]="activityGroups()"
+    [selected]="activityIds()"
+    [multiple]="true"
+    [maxHeight]="'480px'"
+    (toggle)="toggleActivity($event)"
+  />
+  <div class="entry-search-panel__search-bar">
+    <app-search-bar
+      [value]="keyword()"
+      placeholder="search"
+      (valueChange)="keyword.set($event)"
+      (search)="search()"
+    />
+    <app-button [iconOnly]="true" (click)="search()">
+      <app-icon name="search" />
+    </app-button>
+  </div>
+</div>

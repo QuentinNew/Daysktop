@@ -5,6 +5,10 @@
   color: var(--mat-sys-on-surface)
 }
 
+h1 {
+  padding-top: 16px;
+}
+
 .entries {
   display: flex;
   flex-direction: column;
@@ -17,9 +21,18 @@
   height: 1px;
 }
 
+// Fixed to the right of the 800px column, beyond the scroll-bar.
+.search-panel {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(50% + 440px);
+  z-index: 10;
+}
+
 app-scroll-bar {
   position: fixed;
-  top: 16px;
+  top: 32px;
   bottom: 92px;
   left: calc(50% + 416px);
   z-index: 10;
