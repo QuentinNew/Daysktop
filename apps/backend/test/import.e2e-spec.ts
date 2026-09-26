@@ -35,7 +35,7 @@ describe('Daylio import (e2e)', () => {
 
   beforeEach(async () => {
     await prisma.$executeRawUnsafe(
-      'TRUNCATE TABLE "entries", "activities", "moods", "groups", "users" RESTART IDENTITY CASCADE',
+      'TRUNCATE TABLE "media_months", "media", "entries", "activities", "moods", "groups", "users" RESTART IDENTITY CASCADE',
     );
     const user = await prisma.user.create({ data: { username: 'default' } });
     userId = user.id;
@@ -51,6 +51,7 @@ describe('Daylio import (e2e)', () => {
       entriesImported: 2,
       entriesSkippedExisting: 0,
       entriesSkippedCollision: 0,
+      mediaImported: 0,
     });
 
     const groups = await prisma.group.findMany({ orderBy: { order: 'asc' } });
@@ -125,6 +126,7 @@ describe('Daylio import (e2e)', () => {
       entriesImported: 0,
       entriesSkippedExisting: 2,
       entriesSkippedCollision: 0,
+      mediaImported: 0,
     });
 
     expect(await prisma.group.count()).toBe(2);
@@ -162,5 +164,67 @@ describe('Daylio import (e2e)', () => {
     expect(await prisma.entry.count()).toBe(0);
     expect(await prisma.mood.count()).toBe(0);
     expect(await prisma.activity.count()).toBe(0);
+  });
+
+  it('imports media alongside a Daylio-shaped backup', async () => {
+    const result = await importService.importDaylioBackupFile(fixture('daylio-with-media.json'), userId);
+
+    expect(result.mediaImported).toBe(2);
+
+    const media = await prisma.media.findMany({ include: { months: true }, orderBy: { id: 'asc' } });
+    expect(media).toHaveLength(2);
+    expect(media[0]).toMatchObject({
+      id: 1,
+      name: 'Elden Ring',
+      picture: 'https://example.com/elden.png',
+      type: 'GAME',
+      zoom: 1.5,
+      focalX: 40,
+      focalY: 60,
+    });
+    expect(media[0]?.months).toEqual([expect.objectContaining({ year: 2024, month: 1 })]);
+    expect(media[1]).toMatchObject({ id: 2, name: 'Arcane', type: 'SERIE' });
+  });
+
+  it('ignores media when the backup has no media key (a real Daylio file)', async () => {
+    const result = await importService.importDaylioBackupFile(fixture('daylio-basic.json'), userId);
+
+    expect(result.mediaImported).toBe(0);
+    expect(await prisma.media.count()).toBe(0);
+  });
+
+  it('replaces existing media wholesale on re-import, while entries are skipped as already existing', async () => {
+    const first = await importService.importDaylioBackupFile(fixture('daylio-with-media.json'), userId);
+    expect(first.entriesImported).toBe(1);
+    expect(first.mediaImported).toBe(2);
+
+    const second = await importService.importDaylioBackup(
+      {
+        tag_groups: [],
+        tags: [],
+        customMoods: [],
+        dayEntries: [],
+        media: [
+          {
+            id: 5,
+            name: 'Replacement Only',
+            picture: 'https://example.com/replacement.png',
+            type: 'OTHER',
+            zoom: 1,
+            focalX: 50,
+            focalY: 50,
+            months: [],
+          },
+        ],
+      },
+      userId,
+    );
+
+    expect(second.mediaImported).toBe(1);
+    expect(await prisma.entry.count()).toBe(1);
+
+    const media = await prisma.media.findMany();
+    expect(media).toHaveLength(1);
+    expect(media[0]).toMatchObject({ id: 5, name: 'Replacement Only' });
   });
 });

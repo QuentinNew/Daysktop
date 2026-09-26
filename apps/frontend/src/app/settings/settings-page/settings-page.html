@@ -6,10 +6,13 @@
       <p>Accepted types : .daylio, .json, .zip</p>
       <input type="file" class="file-upload" (change)="onImportFileSelected($event)">
       <app-button [disabled]="importButtonDisabled()" (click)="onImport()">Import</app-button>
+
+      <p>You can export all your data (entries and medias) as a backup file.</p>
+      <app-button variant="outlined" (click)="onExport()">Export</app-button>
     </app-tile-with-title>
   </div>
 
-  @if (importNotification(); as notification) {
+  @if (notification(); as notification) {
     <app-notification
       class="settings-page__notification"
       [variant]="notification.variant"

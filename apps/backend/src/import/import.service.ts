@@ -2,7 +2,11 @@ import { readFile } from 'node:fs/promises';
 import { Injectable } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service.js';
-import type { DaylioBackup, DaylioDayEntry } from './daylio-backup.types.js';
+import type {
+  DaylioBackup,
+  DaylioDayEntry,
+  ExportedMedia,
+} from './daylio-backup.types.js';
 import { DaylioImportError } from './import.errors.js';
 
 type PrismaTx = Prisma.TransactionClient;
@@ -30,6 +34,7 @@ export interface ImportResult {
   entriesImported: number;
   entriesSkippedExisting: number;
   entriesSkippedCollision: number;
+  mediaImported: number;
 }
 
 @Injectable()
@@ -112,6 +117,8 @@ export class ImportService {
           entriesImported++;
         }
 
+        const mediaImported = await this.importMedia(tx, backup.media, userId);
+
         return {
           groupsImported: groupIdByDaylioId.size,
           moodsImported: moodIdByDaylioId.size,
@@ -119,10 +126,49 @@ export class ImportService {
           entriesImported,
           entriesSkippedExisting,
           entriesSkippedCollision: skippedCollision,
+          mediaImported,
         };
       },
       { timeout: 120_000 },
     );
+  }
+
+  private async importMedia(
+    tx: PrismaTx,
+    media: ExportedMedia[] | undefined,
+    userId: number,
+  ): Promise<number> {
+    if (!media) {
+      return 0;
+    }
+
+    await tx.media.deleteMany({ where: { userId } });
+
+    for (const item of media) {
+      await tx.media.create({
+        data: {
+          id: item.id,
+          userId,
+          name: item.name,
+          picture: item.picture,
+          type: item.type,
+          zoom: item.zoom,
+          focalX: item.focalX,
+          focalY: item.focalY,
+          months: {
+            create: item.months.map((m) => ({ year: m.year, month: m.month })),
+          },
+        },
+      });
+    }
+
+    if (media.length > 0) {
+      await tx.$executeRawUnsafe(
+        `SELECT setval(pg_get_serial_sequence('media', 'id'), (SELECT COALESCE(MAX(id), 1) FROM media))`,
+      );
+    }
+
+    return media.length;
   }
 
   private async importGroups(

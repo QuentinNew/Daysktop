@@ -35,9 +35,27 @@ export interface DaylioDayEntry {
   isFavorite: boolean;
 }
 
+export interface ExportedMediaMonth {
+  year: number;
+  month: number;
+}
+
+export interface ExportedMedia {
+  id: number;
+  name: string;
+  picture: string;
+  type: 'GAME' | 'SERIE' | 'OTHER';
+  zoom: number;
+  focalX: number;
+  focalY: number;
+  months: ExportedMediaMonth[];
+}
+
 export interface DaylioBackup {
   tag_groups: DaylioTagGroup[];
   tags: DaylioTag[];
   customMoods: DaylioCustomMood[];
   dayEntries: DaylioDayEntry[];
+  /** Only present in Daysktop's own exports; absent from real Daylio backups. */
+  media?: ExportedMedia[];
 }
